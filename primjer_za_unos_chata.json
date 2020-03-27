@@ -1,0 +1,57 @@
+{
+	"title": "test chat",
+	"chat_date": "2020-03-25",
+	"user_id": "9",
+	"messages": [
+		{
+			"content": "Hi",
+			"msg_time": "23:11:24",
+			"part_id": "9"
+		},
+		{
+			"content": "Hey! How are you?",
+			"msg_time": "23:11:27",
+			"part_id": "12"
+		},
+		{
+			"content": "Bad",
+			"msg_time": "23:11:29",
+			"part_id": "9"
+		},
+		{
+			"content": "Here is something to cheer you up:",
+			"msg_time": "23:11:32",
+			"part_id": "12"
+		},
+        {
+			"content": "Image: https://i.imgur.com/nGF1K8f.jpg",
+			"msg_time": "23:11:32",
+			"part_id": "12"
+		},
+        {
+			"content": "Did that help you?",
+			"msg_time": "23:11:32",
+			"part_id": "12"
+		},
+		{
+			"content": "Yes",
+			"msg_time": "23:11:35",
+			"part_id": "9"
+		},
+		{
+			"content": "Great, carry on!",
+			"msg_time": "23:11:38",
+			"part_id": "12"
+		},
+		{
+			"content": "Bye",
+			"msg_time": "23:11:40",
+			"part_id": "9"
+		},
+		{
+			"content": "Bye",
+			"msg_time": "23:11:43",
+			"part_id": "12"
+		}
+	]
+}
