@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="08ec0577-2bed-4b3b-837e-a8559bc3c57c" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1ZWjJX24IiPKtBGyfBrkaq30HrS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/UI" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Igor\Documents\RasaTest\rasa_test\UI" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="08ec0577-2bed-4b3b-837e-a8559bc3c57c" name="Default Changelist" comment="" />
+      <created>1584961673238</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584961673238</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="664" y="-778" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585163191254">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state x="664" y="-778" key="#com.intellij.fileTypes.FileTypeChooser/0.-1080.1920.1040/0.0.1920.1040@0.-1080.1920.1040" timestamp="1585163191254" />
+    <state x="614" y="291" key="FileChooserDialogImpl" timestamp="1585674818848">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="614" y="291" key="FileChooserDialogImpl/0.-1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585674818848" />
+    <state x="471" y="-930" key="SettingsEditor" timestamp="1585162966442">
+      <screen x="0" y="-1080" width="1920" height="1040" />
+    </state>
+    <state x="471" y="-930" key="SettingsEditor/0.-1080.1920.1040/0.0.1920.1040@0.-1080.1920.1040" timestamp="1585162966442" />
+    <state x="661" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1586977208818">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="661" y="-737" key="com.intellij.ide.util.TipDialog/0.-1080.1920.1040/0.0.1920.1040@0.-1080.1920.1040" timestamp="1585674226077" />
+    <state x="661" y="343" key="com.intellij.ide.util.TipDialog/0.-1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585155914161" />
+    <state x="661" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/0.-1080.1920.1040@0.0.1920.1040" timestamp="1586977208818" />
+    <state x="661" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/0.1080.1920.1040@0.0.1920.1040" timestamp="1584961680617" />
+    <state x="661" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585419109471" />
+    <state x="300" y="210" width="672" height="676" key="search.everywhere.popup" timestamp="1586980098909">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="300" y="210" width="672" height="676" key="search.everywhere.popup/0.-1080.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1585675090665" />
+    <state x="300" y="210" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/0.-1080.1920.1040@0.0.1920.1040" timestamp="1586980098909" />
+  </component>
+</project>
