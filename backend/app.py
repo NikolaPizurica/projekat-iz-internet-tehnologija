@@ -10,10 +10,10 @@ from datetime import timedelta
 app = Flask(__name__)
 CORS(app)
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = '***REMOVED***'
-app.config['MYSQL_DATABASE_DB'] = 'it2020'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_USER'] = ''
+app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_DB'] = ''
+app.config['MYSQL_DATABASE_HOST'] = ''
 
 app.config['SECRET_KEY'] = secret_key
 app.config['JWT_AUTH_URL_RULE'] = '/login'
