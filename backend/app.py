@@ -2,13 +2,17 @@ from flask import Flask, request, make_response, jsonify
 from flask_cors import CORS
 from flask_jwt import JWT, jwt_required, current_identity
 from werkzeug.security import generate_password_hash, check_password_hash
-from extensions import mysql, secret_key
+from werkzeug.utils import secure_filename
+from extensions import mysql, secret_key, upload_folder, allowed_img_exts
 from auth import authenticate, identity
 from datetime import timedelta
+from os.path import join
+from os import unlink
 
 
 app = Flask(__name__)
 CORS(app)
+app.config['UPLOAD_FOLDER'] = upload_folder
 
 app.config['MYSQL_DATABASE_USER'] = ''
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
@@ -214,6 +218,44 @@ def delete_chat():
 
 
 # uploadovanje i postavljanje avatara
-@app.route('/set_avatar', methods=['POST'])
+@app.route('/set_avatar', methods=['POST', 'PUT'])
+@jwt_required()
 def set_avatar():
-    return f'Not implemented'
+    if 'file' not in request.files:
+        return make_response('{"code": 1, "message": "No file part in request"}', 400)
+    
+    file = request.files['file']
+    if file.filename == '':
+        return make_response('{"code": 2, "message": "No file selected"}', 400)
+    
+    if '.' not in file.filename:
+        return make_response('{"code": 3, "message": "Files with no extension are not allowed"}', 400)
+    
+    img_ext = file.filename.rsplit('.', 1)[1].lower()
+    if file and img_ext in allowed_img_exts:
+        id = current_identity.id
+        cmd_txt = "select avi_path from EndUser where id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+        old_path = cursor.fetchone()[0]
+
+        if old_path is not None:
+            unlink(old_path)
+        else:
+            new_path = f'{upload_folder}/{id}.{img_ext}'
+
+            cmd_txt = "insert into Avatar(img_path) values (%s)"
+            cmd_args = (new_path,)
+            cursor.execute(cmd_txt, cmd_args)
+
+            cmd_txt = "update EndUser set avi_path = %s where id = %s"
+            cmd_args = (new_path, id)
+            cursor.execute(cmd_txt, cmd_args)
+
+            conn.commit()
+
+        file.save(f'{upload_folder}/{id}.{img_ext}')
+        return make_response('{"code": 0, "message": "Avatar uploaded and set successfully"}', 201)
+
+    else:
+        return make_response('{"code": 4, "message": "File extension not allowed"}', 400)
