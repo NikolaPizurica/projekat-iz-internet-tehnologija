@@ -1,6 +1,8 @@
 
 
-.widget {
+
+:host ::ng-deep .widget {
+	-webkit-animation: fadein 2s;
 	display: none;
 	margin-left: 35%;
 	margin-right: 35%;
@@ -12,19 +14,35 @@
 	background: #f6f6f6;
 	border-radius: 10px 10px 10px 10px;
 	box-shadow: 0px 2px 10px 1px #b5b5b5;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
-.chat_header {
+:host ::ng-deep .chat_header {
 	height: 10%;
-	background: #6072e6;
+	background: #FF6766;
 	/* #6072e6 */
 	border-radius: 10px 10px 0px 0px;
 	padding: 5px;
 	font-size: 20px;
 }
 
-.chats {
-	height: 340px;
+:host ::ng-deep .chats {
+	height: 360px;
 	padding: 5px;
 	margin-top: 5px;
 	border-radius: 1px;
@@ -33,7 +51,7 @@
 	font-size: 2rem;
 }
 
-div.chats::-webkit-scrollbar {
+:host ::ng-deep div.chats::-webkit-scrollbar {
 	width: 0px;
 	/* remove scrollbar space /
     background: transparent;
@@ -43,7 +61,7 @@ div.chats::-webkit-scrollbar {
 
 /* Track */
 
-div.chats::-webkit-scrollbar-track {
+:host ::ng-deep div.chats::-webkit-scrollbar-track {
 	box-shadow: inset 0 0 5px grey;
 	border-radius: 10px;
 }
@@ -51,27 +69,27 @@ div.chats::-webkit-scrollbar-track {
 
 /* Handle */
 
-div.chats::-webkit-scrollbar-thumb {
+:host ::ng-deep div.chats::-webkit-scrollbar-thumb {
 	background: #647aed;
 }
 
 
 /* Handle on hover */
 
-div.chats::-webkit-scrollbar-thumb:hover {
+:host ::ng-deep div.chats::-webkit-scrollbar-thumb:hover {
 	background: #b30000;
 }
 
-#close {
+:host ::ng-deep #close {
 	cursor: pointer;
 }
 
-.clearfix {
+::ng-deep .clearfix {
 	margin-top: 2px;
 	margin-bottom: 2px;
 }
 
-.message {
+:host ::ng-deep .message {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-right: 0;
@@ -79,7 +97,7 @@ div.chats::-webkit-scrollbar-thumb:hover {
 
 }
 
-.botAvatar {
+:host ::ng-deep .botAvatar {
 	border-radius: 50%;
 	width: 1.5em;
 	height: 1.5em;
@@ -88,12 +106,12 @@ div.chats::-webkit-scrollbar-thumb:hover {
 	border: 2px solid #6072e6;
 }
 
-.botMsg {
+:host ::ng-deep .botMsg {
 	float: left;
 	margin-top: 5px;
-	background: #ffffff;
+	background: #71b9e2;
 	box-shadow: 2px 5px 5px 1px #efeef5;
-	border: 1px solid #ffffff;
+	border: 1px solid #b174ae;
 	margin-left: 0.5em;
 	padding: 0.6em 1em;
 	border-radius: 1.5em;
@@ -101,9 +119,14 @@ div.chats::-webkit-scrollbar-thumb:hover {
 	min-width: 25%;
 	font-size: 1.2rem;
 	word-wrap: break-word;
+
+	/* HACK (clearfix isn't working) */
+	margin-right: 50%;
+	
+	
 }
 
-.userMsg {
+:host ::ng-deep .userMsg {
 	animation: animateElement linear 0.2s;
 	animation-iteration-count: 1;
 	margin-top: 5px;
@@ -111,8 +134,8 @@ div.chats::-webkit-scrollbar-thumb:hover {
 	padding: 0.6em 1em;
 	float: right;
 	margin-right: 0.5em;
-	background: #6072e6;
-	border: 1px solid #6072e6;
+	background: #FF6766;
+	border: 1px solid #d8445d;
 	color: #fff;
 	border-radius: 1.5em;
 	margin-bottom: 0.15em;
@@ -120,9 +143,18 @@ div.chats::-webkit-scrollbar-thumb:hover {
 	max-width: 55%;
 	min-width: 25%;
 	line-height: 1.5em;
+	
+	/* HACK (clearfix isn't working) */
+	margin-left: 50%;
 }
 
-.userAvatar {
+:host ::ng-deep .msgSeparator {
+	width: 100%;
+	background-color: transparent;
+	height: 10px;
+}
+
+:host ::ng-deep .userAvatar {
 	animation: animateElement linear 0.3s;
 	animation-iteration-count: 1;
 	border-radius: 50%;
@@ -133,7 +165,7 @@ div.chats::-webkit-scrollbar-thumb:hover {
 	border: 2px solid #6072e6;
 }
 
-.singleCard {
+:host ::ng-deep .singleCard {
 	/* height: 200px; */
 	padding-left: 10%;
 	padding-right: 10px;
@@ -147,20 +179,20 @@ div.chats::-webkit-scrollbar-thumb:hover {
 	box-shadow: 2px 5px 5px 1px #dbdade;
 }
 
-.cardsImage {
+:host ::ng-deep .cardsImage {
 	width: 100%;
 	height: 80%;
 	border-radius: 10px 10px 0px 0px;
 }
 
-.keypad {
-	height: 45px;
+:host ::ng-deep .keypad {
+	height: 35px;
 	position: absolute;
-	bottom: 10px;
+	bottom: 35px;
 	width: 90%;
 }
 
-.usrInput {
+:host ::ng-deep .usrInput {
 	background: #f1f0f0;
 	padding: 0.5em;
 	width: 90%;
@@ -172,26 +204,26 @@ div.chats::-webkit-scrollbar-thumb:hover {
 	height: 40px;
 }
 
-input:focus {
+:host ::ng-deep input:focus {
 	outline: none;
 }
 
-video:focus {
+:host ::ng-deep video:focus {
 	outline: none;
 }
 
-.menuTitle {
+:host ::ng-deep .menuTitle {
 	padding: 5px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
 
-.menu {
+:host ::ng-deep .menu {
 	padding: 5px;
 }
 
 
-.menuChips {
+:host ::ng-deep .menuChips {
 	display: block;
 	background: #6072e6;
 	color: #fff;
@@ -204,7 +236,7 @@ video:focus {
 	word-wrap: break-word;
 }
 
-.imgcard {
+:host ::ng-deep .imgcard {
 	object-fit: cover;
 	width: 80%;
 	height: 90%;
@@ -212,8 +244,8 @@ video:focus {
 	margin-left: 1%;
 }
 
-.chip {
-	background-color: #6072e6;
+:host ::ng-deep .chip {
+	background-color: #ce5b81;
 	color: #fff;
 	font-weight: normal;
 	font-weight: 0;
@@ -232,18 +264,18 @@ video:focus {
 }
 
 
-.keypad-size {
+:host ::ng-deep .keypad-size {
     font-size: 1.5rem;
 }
-.chats-size {
+:host ::ng-deep .chats-size {
     font-size: 4rem;
 }
 
-.label-size {
+:host ::ng-deep .label-size {
     font-size: 2rem;
 }
 
-.imgProfile {
+:host ::ng-deep .imgProfile {
 	box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 10px 0 rgba(0, 0, 0, 0.12);
 	background: white;
 	border-radius: 50px;
@@ -251,7 +283,7 @@ video:focus {
 	padding: 2%;
 }
 
-.profile_div {
+:host ::ng-deep .profile_div {
 	/* display: none; */
 	position: fixed;
 	padding: 5px;
@@ -261,10 +293,85 @@ video:focus {
 	cursor: pointer;
 }
 
-.profileIcon {
+:host ::ng-deep .profileIcon {
 	height: 15%;
 	align-items: center;
 	float: left;
 	margin-right: 10px;
 	width: 20%;
+}
+
+
+
+
+.btn {
+    
+    margin-left: 20px;
+	line-height: 100px;
+	height: 100px;
+	text-align: center;
+	width: 250px;
+	cursor: pointer;
+	
+	font-size: 30px;
+	text-align: center;
+	letter-spacing: 2px;
+	
+}
+
+.btn:hover {
+	letter-spacing: 5px;
+	color: black;
+	font-weight: bold;
+}
+.btn-launch {
+	color: grey;
+	transition: all 0.5s;
+	position: absolute;	
+	left: 42.5%;
+	top: 40%;
+	
+}
+.btn-launch span {
+	z-index: 2;	
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;	
+	
+}
+.btn-launch::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	transition: all 0.5s;
+	border: 1px solid rgba(156, 17, 17, 0.2);
+	background-color: rgba(150, 26, 26, 0.6);
+}
+.btn-launch::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	transition: all 0.5s;
+	border: 1px solid rgba(255,255,255,0.2);
+	background-color: rgba(255,255,255,0.1);
+}
+.btn-launch:hover::before {
+  transform: rotate(-45deg);
+  background-color: rgba(148, 28, 28, 0.5);
+  
+}
+.btn-launch:hover::after {
+
+  transform: rotate(45deg);
+  background-color: rgba(199, 37, 37, 0.5);
+  
 }

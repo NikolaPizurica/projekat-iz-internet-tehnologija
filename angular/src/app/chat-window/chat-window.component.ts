@@ -6,8 +6,8 @@ import * as $ from 'jquery';
 @Component({
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
-  styleUrls: [  './chat-window.component.css', '../../assets/css/materialize.min.css'],
-  encapsulation: ViewEncapsulation.None // Remove Added css rules 
+  styleUrls: [  './chat-window.component.css']//, '../../assets/css/materialize.min.css'],
+  //encapsulation: ViewEncapsulation.None // Remove Added css rules 
   
 })
 
@@ -32,7 +32,7 @@ export class ChatWindowComponent implements OnInit {
   
     console.log("Loaded Component chat-window.");
 
-
+    
 
     // JQUERY
     $("#test-button").click(function(){
@@ -85,7 +85,7 @@ export class ChatWindowComponent implements OnInit {
     let setUserResponse = function(val) {
   
   
-      var UserResponse = '<img class="userAvatar" src=' + "../../assets/images/userAvatar2.jpg" + '><p class="userMsg">' + val + ' </p><div class="clearfix"></div>';
+      var UserResponse = '<img class="userAvatar" src=' + "../../assets/images/userAvatar2.jpg" + '><p class="userMsg">' + val + ' </p><div class="clearfix"></div>'; 
       
       $(UserResponse).appendTo('.chats').show('slow');
       console.log(document.getElementById("chats"));
@@ -120,15 +120,15 @@ export class ChatWindowComponent implements OnInit {
 
 
     // Toggle Chatbot
-    $('#profile_div').click(function () {
-      $('.profile_div').toggle();
+    $('.btn-launch').click(function () {
+      $('.btn-launch').toggle();
       $('.widget').toggle();
       
       scrollToBottomOfResults();
     });
     
     $('#close').click(function () {
-      $('.profile_div').toggle();
+      $('.btn-launch').toggle();
       $('.widget').toggle();
     });
 
@@ -192,7 +192,7 @@ export class ChatWindowComponent implements OnInit {
       setTimeout(function () {
         if (val.length < 1) {
           //if there is no response from Rasa
-          msg = 'I couldn\'t get that. Let\' try something else!';
+          msg = 'I couldn\'t get that. Let\'s try something else!';
     
           var BotResponse = '<img class="botAvatar" src="../../assets/images/botAvatar2.png"><p class="botMsg">' + msg + '</p><div class="clearfix"></div>';
           $(BotResponse).appendTo('.chats').hide().fadeIn(1000);
