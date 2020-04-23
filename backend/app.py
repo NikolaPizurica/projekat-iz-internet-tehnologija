@@ -1,12 +1,10 @@
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, send_file
 from flask_cors import CORS
 from flask_jwt import JWT, jwt_required, current_identity
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
 from extensions import mysql, secret_key, upload_folder, allowed_img_exts
 from auth import authenticate, identity
 from datetime import timedelta
-from os.path import join
 from os import unlink
 
 
@@ -70,26 +68,29 @@ def create_user():
 @app.route('/save_chat', methods=['POST'])
 @jwt_required()
 def save_chat():
-    id = current_identity.id
-    data = request.get_json()
-    cmd_txt = "insert into Chat(title, chat_date, user_id) values (%s, %s, %s)"
-    args = (data['title'], data['chat_date'], id)
-    cursor.execute(cmd_txt, args)
-
-    chat_num = cursor.lastrowid
-    for message in data['messages']:
-        cmd_txt = "insert into Message(content, msg_time, part_id, chat_num) values (%s, %s, %s, %s)"
-        args = (message['content'], message['msg_time'], message['part_id'], chat_num)
+    try:
+        id = current_identity.id
+        data = request.get_json()
+        cmd_txt = "insert into Chat(title, chat_date, user_id) values (%s, %s, %s)"
+        args = (data['title'], data['chat_date'], id)
         cursor.execute(cmd_txt, args)
-    conn.commit()
 
-    return make_response('{"code": 0, "message": "Chat saved successfully"}', 201)
+        chat_num = cursor.lastrowid
+        for message in data['messages']:
+            cmd_txt = "insert into Message(content, msg_time, part_id, chat_num) values (%s, %s, %s, %s)"
+            args = (message['content'], message['msg_time'], message['part_id'], chat_num)
+            cursor.execute(cmd_txt, args)
+        
+        conn.commit()
+        return make_response('{"code": 0, "message": "Chat saved successfully"}', 201)
+    except:
+        return make_response('{"code": 1, "message": "Missing fields in request body"}', 400)
 
 
 # svako moze da vidi koji botovi postoje
 @app.route('/list_bots', methods=['GET'])
 def list_bots():
-    cmd_txt = "select b.id, b.bot_name, b.bot_desc, b.rest_endpoint, b.avi_path, p.mail " \
+    cmd_txt = "select b.id, b.bot_name, b.bot_desc, b.rest_endpoint, p.avi_path, p.mail " \
               "from bot b inner join participant p on b.id = p.id"
     cursor.execute(cmd_txt)
     query_res = cursor.fetchall()
@@ -145,76 +146,94 @@ def search_chats():
 @app.route('/delete_user', methods=['DELETE'])
 @jwt_required()
 def delete_user():
-    id = current_identity.id
-    data = request.get_json()
-    cmd_txt = "select * from EndUser where id = %s"
-    cmd_args = (id,)
-    cursor.execute(cmd_txt, cmd_args)
-
-    id, username, pass_hash, avi_path = cursor.fetchone()
-    # (9, 'TestUser', '78ddc855...', None)
-    if not check_password_hash(pass_hash, data['password']):
-        return make_response('{"code": 1, "message": "Unauthorized: wrong password"}', 401)
-
-    cmd_txt = "select chat_num from Chat where user_id = %s"
-    cmd_args = (id,)
-    cursor.execute(cmd_txt, cmd_args)
-    rows = cursor.fetchall()
-    if len(rows) > 0:
-        chat_nums = '(' + ','.join([str(row[0]) for row in rows]) + ')'
-        cmd_txt = "delete from Message where chat_num in " + chat_nums
-        cursor.execute(cmd_txt)
-
-    cmd_txt = "delete from Chat where user_id = %s"
-    cmd_args = (id,)
-    cursor.execute(cmd_txt, cmd_args)
-
-    cmd_txt = "delete from EndUser where id = %s"
-    cmd_args = (id,)
-    cursor.execute(cmd_txt, cmd_args)
-
-    cmd_txt = "delete from Participant where id = %s"
-    cmd_args = (id,)
-    cursor.execute(cmd_txt, cmd_args)
-
-    if avi_path is not None:
-        cmd_txt = "delete from Avatar where img_path = %s"
-        cmd_args = (avi_path,)
+    try:
+        id = current_identity.id
+        data = request.get_json()
+        cmd_txt = """select u.id, u.pass, p.avi_path
+                    from EndUser u inner join Participant p on u.id = p.id where u.id = %s"""
+        cmd_args = (id,)
         cursor.execute(cmd_txt, cmd_args)
-        # jos da se brise iz fajl sistema ...
 
-    conn.commit()
-    return make_response('{"code": 0, "message": "Account deleted successfully"}', 200)
+        id, pass_hash, avi_path = cursor.fetchone()
+        # (9, 'TestUser', '78ddc855...', None)
+        if not check_password_hash(pass_hash, data['password']):
+            return make_response('{"code": 1, "message": "Unauthorized: wrong password"}', 401)
+
+        cmd_txt = "select chat_num from Chat where user_id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+        rows = cursor.fetchall()
+        if len(rows) > 0:
+            chat_nums = '(' + ','.join([str(row[0]) for row in rows]) + ')'
+            cmd_txt = "delete from Message where chat_num in " + chat_nums
+            cursor.execute(cmd_txt)
+
+        cmd_txt = "delete from Chat where user_id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+
+        cmd_txt = "delete from EndUser where id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+
+        cmd_txt = "delete from Participant where id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+
+        if avi_path is not None:
+            unlink(avi_path)
+
+        conn.commit()
+        return make_response('{"code": 0, "message": "Account deleted successfully"}', 200)
+    except:
+        return make_response('{"code": 2, "message": "Missing fields in request body"}', 400)
 
 
 # korisnik moze da brise iskljucivo svoje chatove
 @app.route('/delete_chat', methods=['DELETE'])
 @jwt_required()
 def delete_chat():
-    id = current_identity.id
-    data = request.get_json()
+    try:
+        id = current_identity.id
+        data = request.get_json()
 
-    cmd_txt = "select user_id from Chat where chat_num = %s"
-    cmd_args = (data['chat_num'],)
-    cursor.execute(cmd_txt, cmd_args)
+        cmd_txt = "select user_id from Chat where chat_num = %s"
+        cmd_args = (data['chat_num'],)
+        cursor.execute(cmd_txt, cmd_args)
 
-    query_res = cursor.fetchone()
-    if query_res:
-        if id != query_res[0]:
-            return make_response('{"code": 1, "message": "Unauthorized"}', 401)
-    else:
-        return make_response('{"code": 2, "message": "No chat with given number"}', 400)
+        query_res = cursor.fetchone()
+        if query_res:
+            if id != query_res[0]:
+                return make_response('{"code": 1, "message": "Unauthorized"}', 401)
+        else:
+            return make_response('{"code": 2, "message": "No chat with given number"}', 400)
 
-    cmd_txt = "delete from Message where chat_num = %s"
-    cmd_args = (data['chat_num'],)
-    cursor.execute(cmd_txt, cmd_args)
+        cmd_txt = "delete from Message where chat_num = %s"
+        cmd_args = (data['chat_num'],)
+        cursor.execute(cmd_txt, cmd_args)
 
-    cmd_txt = "delete from Chat where chat_num = %s"
-    cmd_args = (data['chat_num'],)
-    cursor.execute(cmd_txt, cmd_args)
-    conn.commit()
+        cmd_txt = "delete from Chat where chat_num = %s"
+        cmd_args = (data['chat_num'],)
+        cursor.execute(cmd_txt, cmd_args)
+        conn.commit()
 
-    return make_response('{"code": 0, "message": "Chat deleted successfully"}', 200)
+        return make_response('{"code": 0, "message": "Chat deleted successfully"}', 200)
+    except:
+        return make_response('{"code": 3, "message": "Missing fields in request body"}', 400)
+
+
+# dovlacenje avatara sa servera
+@app.route('/get_avatar', methods=['GET'])
+def get_avatar():
+    try:
+        id = request.args['id']
+        cmd_txt = "select avi_path from Participant where id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+        avi_path = cursor.fetchone()[0]
+        return send_file(avi_path)
+    except:
+        return make_response('{"code": 1, "message": "Invalid ID / No avatar uploaded for user"}', 400)
 
 
 # uploadovanje i postavljanje avatara
@@ -234,28 +253,81 @@ def set_avatar():
     img_ext = file.filename.rsplit('.', 1)[1].lower()
     if file and img_ext in allowed_img_exts:
         id = current_identity.id
-        cmd_txt = "select avi_path from EndUser where id = %s"
+        cmd_txt = "select avi_path from Participant where id = %s"
         cmd_args = (id,)
         cursor.execute(cmd_txt, cmd_args)
         old_path = cursor.fetchone()[0]
+        new_path = f'{upload_folder}/{id}.{img_ext}'
 
         if old_path is not None:
             unlink(old_path)
-        else:
-            new_path = f'{upload_folder}/{id}.{img_ext}'
 
-            cmd_txt = "insert into Avatar(img_path) values (%s)"
-            cmd_args = (new_path,)
-            cursor.execute(cmd_txt, cmd_args)
+        cmd_txt = "update Participant set avi_path = %s where id = %s"
+        cmd_args = (new_path, id)
+        cursor.execute(cmd_txt, cmd_args)
 
-            cmd_txt = "update EndUser set avi_path = %s where id = %s"
-            cmd_args = (new_path, id)
-            cursor.execute(cmd_txt, cmd_args)
+        file.save(new_path)
+        conn.commit()
 
-            conn.commit()
-
-        file.save(f'{upload_folder}/{id}.{img_ext}')
         return make_response('{"code": 0, "message": "Avatar uploaded and set successfully"}', 201)
 
     else:
         return make_response('{"code": 4, "message": "File extension not allowed"}', 400)
+
+
+# uklanjanje postojeceg avatara / vracanje na default avatar
+@app.route('/remove_avatar', methods=['DELETE'])
+@jwt_required()
+def remove_avatar():
+    id = current_identity.id
+    cmd_txt = "select avi_path from Participant where id = %s"
+    cmd_args = (id,)
+    cursor.execute(cmd_txt, cmd_args)
+    avi_path = cursor.fetchone()[0]
+    if avi_path is not None:
+        unlink(avi_path)
+
+        cmd_txt = "update Participant set avi_path = NULL where id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+
+        conn.commit()
+        return make_response('{"code": 0, "message": "Avatar removed successfully"}', 200)
+    else:
+        return make_response('{"code": 0, "message": "No avatar to remove"}', 200)
+
+
+@app.route('/change_username', methods=['PUT'])
+@jwt_required()
+def change_username():
+    try:
+        id = current_identity.id
+        cmd_txt = "update EndUser set username = %s where id = %s"
+        cmd_args = (request.json['username'], id)
+        cursor.execute(cmd_txt, cmd_args)
+        conn.commit()
+        return make_response('{"code": 0, "message": "Username changed successfully"}', 200)
+    except:
+        return make_response('{"code": 1, "message": "Missing fields in request body"}', 400)
+
+
+@app.route('/change_password', methods=['PUT'])
+@jwt_required()
+def change_password():
+    try:
+        id = current_identity.id
+        cmd_txt = "select pass from EndUser where id = %s"
+        cmd_args = (id,)
+        cursor.execute(cmd_txt, cmd_args)
+
+        pass_hash = cursor.fetchone()[0]
+        if not check_password_hash(pass_hash, request.json['old_password']):
+            return make_response('{"code": 1, "message": "Unauthorized: wrong password"}', 401)
+        
+        cmd_txt = "update EndUser set pass = %s where id = %s"
+        cmd_args = (generate_password_hash(request.json['new_password']), id)
+        cursor.execute(cmd_txt, cmd_args)
+        conn.commit()
+        return make_response('{"code": 0, "message": "Password changed successfully"}', 200)
+    except:
+        return make_response('{"code": 2, "message": "Missing fields in request body"}', 400)
