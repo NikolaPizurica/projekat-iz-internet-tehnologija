@@ -1,0 +1,22 @@
+.login {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-header {
+    font-size: 44px;
+}
+
+.form-group {
+    font-size: 30px;
+}
+
+.form-group .form-control {
+    font-size: 30px;
+}
+
+.btn {
+    font-size: 30px;
+}
