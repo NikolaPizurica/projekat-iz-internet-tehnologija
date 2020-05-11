@@ -1,0 +1,9 @@
+<div class="profile">
+    <div>Username: {{user.username}}</div>
+    <img width="200" height="200" [src]="avatarSrc" (error)="onAvatarError($event)">
+    <div class="controls">
+        <button (click)="deleteAvatar()">Remove avatar</button>
+        <label for="file">Set new avatar</label>
+        <input type="file" id="file" (change)="changeAvatar($event)"/>
+    </div>
+</div>

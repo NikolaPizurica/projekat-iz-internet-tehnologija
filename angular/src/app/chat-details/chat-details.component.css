@@ -1,0 +1,19 @@
+.details-header {
+    font-size: 24px;
+}
+
+.messages {
+    font-size: 24px;
+    border: 1px solid black;
+    max-width: 50%;
+}
+
+.left {
+    float: left;
+    border: 1px solid black;
+}
+
+.right {
+    float: right;
+    border: 1px solid black;
+}

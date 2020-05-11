@@ -1,0 +1,36 @@
+<div class="search">
+    <div class="search-body">
+        <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-form">
+            <div class="form-group">
+                <label for="title_str">Title</label>
+                <input type="text" formControlName="title_str" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="date_from">Start date</label>
+                <input type="date" formControlName="date_from" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="date_to">End date</label>
+                <input type="date" formControlName="date_to" class="form-control"/>
+            </div>
+            <button class="btn">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="results">
+    <table *ngIf="chats.length">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let chat of chats" (click)="gotoChat(chat)">
+                <td>{{chat.title}}</td>
+                <td>{{chat.chat_date}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

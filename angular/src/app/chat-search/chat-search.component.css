@@ -1,0 +1,22 @@
+.search, .results {
+    font-size: 24px;
+}
+
+.search input {
+    font-size: 24px;
+}
+
+.search button {
+    font-size: 24px;
+}
+
+.results table, th, td {
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.results tbody tr:hover {
+    background-color: #FF6766;
+    cursor: pointer;
+}

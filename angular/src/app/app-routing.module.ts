@@ -5,9 +5,18 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth/auth.guard'
 
+import { ChatSearchComponent } from './chat-search/chat-search.component';
+import { ChatDetailsComponent } from './chat-details/chat-details.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { ProfileComponent } from './profile/profile.component';
+
 const routes: Routes = [
-  { path: '', component: ChatWindowComponent, canActivate: [AuthGuard] },
+  { path: '', component: ChatWindowComponent},
   { path: 'login', component: LoginComponent},
+  { path: 'chat_search', component: ChatSearchComponent, canActivate: [AuthGuard] },
+  { path: 'chat_details', component: ChatDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'registration', component: RegistrationComponent},
+  { path: 'profile', component: ProfileComponent},
 
   // redirect
   { path: '**', redirectTo: '' }

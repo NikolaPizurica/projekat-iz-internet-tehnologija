@@ -369,7 +369,7 @@ def get_chat():
     try:
         id = current_identity.id
         cmd_txt = "select * from Chat where chat_num = %s"
-        cmd_args = (request.args['chat_num'])
+        cmd_args = (int(request.args['chat_num']),)
         cursor.execute(cmd_txt, cmd_args)
         query_res = cursor.fetchone()
 

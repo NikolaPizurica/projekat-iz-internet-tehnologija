@@ -1,0 +1,28 @@
+.profile {
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile img {
+    display: block;
+    border-radius: 50%;
+}
+
+button {
+    font-size: 24px;
+}
+
+.invalid {
+    color: red;
+}
+
+label[for="file"] {
+    display: block;
+    border: 1px solid black;
+}
+
+#file {
+    display: none;
+}

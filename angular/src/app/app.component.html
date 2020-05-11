@@ -6,14 +6,16 @@
 
         <div class="btn btn-one" routerLink="/"><span>HOME</span></div>
         <!-- Show tabs based on the loggedIn variable -->
-        
-        <div *ngIf="!currentUser" class="btn btn-one" routerLink="/login"><span>LOGIN</span></div>
-        
-        <div *ngIf="!currentUser" class="btn btn-one"><span>REGISTER</span></div>
 
-        <div *ngIf="currentUser" class="btn btn-one"><span>PROFILE</span></div>
+        <div *ngIf="currentUser" class="btn btn-one" routerLink="/chat_search"><span>MY CHATS</span></div>
+
+        <div *ngIf="currentUser" class="btn btn-one" routerLink="/profile"><span>MY PROFILE</span></div>
 
         <div *ngIf="admin" class="btn btn-one"><span>ADMINISTRATION</span></div>
+
+        <div *ngIf="!currentUser" class="btn btn-one" routerLink="/login"><span>LOGIN</span></div>
+        
+        <!-- <div *ngIf="!currentUser" class="btn btn-one"><span>REGISTER</span></div> -->
 
         <div *ngIf="currentUser" class="btn btn-one" (click)="logout()"><span>LOGOUT</span></div>
     
