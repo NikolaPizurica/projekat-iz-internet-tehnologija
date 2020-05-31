@@ -14,6 +14,7 @@ import { ChatSearchComponent } from './chat-search/chat-search.component';
 import { ChatDetailsComponent } from './chat-details/chat-details.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AdministrationComponent } from './administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ProfileComponent } from './profile/profile.component';
     ChatSearchComponent,
     ChatDetailsComponent,
     RegistrationComponent,
-    ProfileComponent
+    ProfileComponent,
+    AdministrationComponent
   ],
   imports: [
     BrowserModule,

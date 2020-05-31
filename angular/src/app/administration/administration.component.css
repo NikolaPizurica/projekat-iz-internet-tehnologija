@@ -1,0 +1,30 @@
+.bot-details {
+    height: 35vh;
+    font-size: 20px;
+}
+
+.avatar {
+    float: left;
+    max-width: 35vh;
+    max-height: 100%;
+}
+
+.avatar img {
+    display: block;
+    border-radius: 50%;
+    max-width: 30vh;
+    max-height: 30vh;
+}
+
+label.set-avatar {
+    display: block;
+    border: 1px solid black;
+}
+
+.file-input {
+    display: none;
+}
+
+.multiline {
+    white-space: pre-wrap;
+}

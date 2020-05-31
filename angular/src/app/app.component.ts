@@ -16,7 +16,6 @@ export class AppComponent {
   // za sad je suvisno jer zakljucujemo na osnovu currentUser objekta
   loggedIn: boolean = false;
   
-  admin: boolean = false;
   route: string = '/'
 
   currentUser: User;

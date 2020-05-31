@@ -11,7 +11,7 @@
 
         <div *ngIf="currentUser" class="btn btn-one" routerLink="/profile"><span>MY PROFILE</span></div>
 
-        <div *ngIf="admin" class="btn btn-one"><span>ADMINISTRATION</span></div>
+        <div *ngIf="currentUser && currentUser.admin" class="btn btn-one" routerLink="/administration"><span>ADMINISTRATION</span></div>
 
         <div *ngIf="!currentUser" class="btn btn-one" routerLink="/login"><span>LOGIN</span></div>
         
