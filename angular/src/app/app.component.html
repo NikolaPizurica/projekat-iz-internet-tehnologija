@@ -5,7 +5,9 @@
     <nav>
 
         <div class="btn btn-one" routerLink="/"><span>HOME</span></div>
-        <!-- Show tabs based on the loggedIn variable -->
+        
+        <div class="btn btn-one" (click)="gotoBots()"><span>BOTS</span></div>
+        <span id="notification"></span>
 
         <div *ngIf="currentUser" class="btn btn-one" routerLink="/chat_search"><span>MY CHATS</span></div>
 
@@ -19,7 +21,8 @@
 
         <div *ngIf="currentUser" class="btn btn-one" (click)="logout()"><span>LOGOUT</span></div>
     
-    
+        <label for="toggle-notifications">Notifications</label>
+        <input type="checkbox" id="toggle-notifications" (change)="toggleNotifications($event)" checked>
     </nav>
 
     <router-outlet></router-outlet>

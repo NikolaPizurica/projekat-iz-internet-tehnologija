@@ -1,36 +1,41 @@
-<div class="search">
-    <div class="search-body">
-        <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-form">
-            <div class="form-group">
-                <label for="title_str">Title</label>
-                <input type="text" formControlName="title_str" class="form-control"/>
+<div class="container">
+    <div style="flex: 0;">
+        <h2>Search parameters</h2>
+        <div class="search">
+            <div class="search-body">
+                <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-form">
+                    <div class="form-group">
+                        <label for="title_str">Title</label>
+                        <input type="text" formControlName="title_str" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="date_from">Start date</label>
+                        <input type="date" formControlName="date_from" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="date_to">End date</label>
+                        <input type="date" formControlName="date_to" class="form-control"/>
+                    </div>
+                    <button class="btn">Search</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="date_from">Start date</label>
-                <input type="date" formControlName="date_from" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="date_to">End date</label>
-                <input type="date" formControlName="date_to" class="form-control"/>
-            </div>
-            <button class="btn">Search</button>
-        </form>
-    </div>
-</div>
+        </div>
 
-<div class="results">
-    <table *ngIf="chats.length">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let chat of chats" (click)="gotoChat(chat)">
-                <td>{{chat.title}}</td>
-                <td>{{chat.chat_date}}</td>
-            </tr>
-        </tbody>
-    </table>
+        <h2>Search results</h2>
+        <div class="results" *ngIf="chats.length">
+            <div class="result" *ngFor="let chat of chats.slice(currPage*pageLen, (currPage+1)*pageLen)" (click)="gotoChat(chat)">
+                {{chat.title}}
+            </div>
+        </div>
+        <div class="page-controls">
+            <span *ngFor="let _ of [].constructor(numOfPages); let i = index">
+                <input type="radio" [attr.id]="'page'+i" name="pages" [checked]="i === 0" (change)="pageChanged(i)">
+                <label [attr.for]="'page'+i">{{i+1}}</label>
+            </span>
+        </div>
+    </div>
+
+    <div style="flex: 1;">
+        <app-chat-details *ngIf="currChat !== null"></app-chat-details>
+    </div>
 </div>

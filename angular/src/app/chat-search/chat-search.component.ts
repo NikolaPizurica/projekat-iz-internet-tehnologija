@@ -15,6 +15,12 @@ import { ChatService } from '../util/chat.service'
 export class ChatSearchComponent implements OnInit {
   searchForm: FormGroup;
   chats: Chat[] = [];
+  
+  numOfPages = 0;
+  pageLen = 2;
+  currPage = 0;
+
+  currChat: Chat = null;
 
   constructor(private httpClient: HttpClient, 
               private formBuilder: FormBuilder,
@@ -30,6 +36,7 @@ export class ChatSearchComponent implements OnInit {
     this.httpClient.get<any>(`${environment.apiUrl}/search_chats`)
       .subscribe((data) => {
         this.chats = data.chats;
+        this.numOfPages = Math.ceil(this.chats.length / this.pageLen);
       });
   }
 
@@ -51,9 +58,13 @@ export class ChatSearchComponent implements OnInit {
     this.httpClient.get<any>(`${environment.apiUrl}/search_chats`, { params: getParams })
       .subscribe((data) => {
         this.chats = data.chats;
-        console.log(this.chats);
-        this.router.navigate(['/chat_search']);
+        this.numOfPages = Math.ceil(this.chats.length / this.pageLen);
+        //this.router.navigate(['/chat_search']);
       });
+  }
+
+  pageChanged(index) {
+    this.currPage = index;
   }
 
   gotoChat(chat: Chat) {
@@ -61,7 +72,8 @@ export class ChatSearchComponent implements OnInit {
     this.httpClient.get<Chat>(`${environment.apiUrl}/get_chat`, { params: { chat_num: `${chat.chat_num}` } })
       .subscribe((data) => {
         this.chatService.chat = data;
-        this.router.navigate(['/chat_details']);
+        //this.router.navigate(['/chat_details']);
+        this.currChat = data;
       });
   }
 

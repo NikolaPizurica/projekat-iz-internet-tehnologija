@@ -1,6 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import * as $ from 'jquery';
+
+import { AuthService } from '../auth/auth.service'
+import { environment } from '../../environments/environment';
+import { User } from '../models/user';
+import { BotService } from '../util/bot.service';
 
 
 @Component({
@@ -12,24 +18,56 @@ import * as $ from 'jquery';
 })
 
 
-
-
 export class ChatWindowComponent implements OnInit {
  
+  user: User;
+  userAvi = '';
+  current_chat;
 
-  constructor() { 
-   
+  constructor(private httpClient: HttpClient,
+              private authService: AuthService,
+              private botService: BotService) { 
   }
 
-  
+  onAvatarError(e) {
+    e.currentTarget.src = `${environment.defaultAvi}`;
+  }
+
+  saveChat() {
+    this.current_chat.title = prompt('Enter chat title:', 'new chat');
+    if (this.current_chat.title === null) {
+      return;
+    }
+    this.httpClient.post(`${environment.apiUrl}/save_chat`, this.current_chat)
+      .subscribe((res) => {
+        console.log(res);
+      })
+  }
   
   ngOnInit(): void {
+    this.user = this.authService.currentUserValue;
+    let bot = this.botService.bot;
+    if (this.user !== null) {
+      this.userAvi = `${environment.apiUrl}/get_avatar?id=${this.user.id}&${Date.now()}`;
+    }
+    else {
+      this.userAvi = `${environment.defaultAvi}`;
+    }
+    
     let language = "english";
     let today = new Date();
     let date = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
 
-    let current_chat = {"title": "test chat", "chat_date": date, "user_id": "9", "messages": []};  // JSON FOR CURRENT CHAT
-  
+    let userId;
+    if (this.user !== null) {
+      userId = this.user.id;
+    }
+    else {
+      userId = -1;
+    }
+    this.current_chat = {"title": "new chat", "chat_date": date, "user_id": userId, "messages": []};  // JSON FOR CURRENT CHAT
+    let current_chat = this.current_chat;
+
     console.log("Loaded Component chat-window.");
 
     
@@ -61,7 +99,12 @@ export class ChatWindowComponent implements OnInit {
     }
 
     // SAVE CHAT
-    $("#button-save-chat").click(function(){
+    /*$("#button-save-chat").click(function(){
+      current_chat.title = prompt('Enter chat title:', 'new chat');
+      if (current_chat.title === null) {
+        return;
+      }
+      
       console.log("Saving Chat..");
       print_chat();
   
@@ -80,12 +123,13 @@ export class ChatWindowComponent implements OnInit {
             }
       })
   
-    });
+    });*/
+
+    let userAvi = this.userAvi;
 
     let setUserResponse = function(val) {
   
-  
-      var UserResponse = '<img class="userAvatar" src=' + "../../assets/images/userAvatar2.jpg" + '><p class="userMsg">' + val + ' </p><div class="clearfix"></div>'; 
+      var UserResponse = '<img class="userAvatar" src=' + userAvi + '><p class="userMsg">' + val + ' </p><div class="clearfix"></div>'; 
       
       $(UserResponse).appendTo('.chats').show('slow');
       console.log(document.getElementById("chats"));
@@ -160,7 +204,7 @@ export class ChatWindowComponent implements OnInit {
       // Save message to current_chat json
       today = new Date();
       let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      current_chat.messages.push({"content": message, "msg_time": time, "part_id": "9"});
+      current_chat.messages.push({"content": message, "msg_time": time, "part_id": userId});
   
       // Rasa
       $.ajax({
@@ -169,7 +213,7 @@ export class ChatWindowComponent implements OnInit {
       contentType: 'application/json',
       data: JSON.stringify({
         "message": message,
-        "sender": "Me"
+        "sender": 'User' + userId
       }),
       success: function (data, textStatus) {
         if(data != null){
@@ -186,7 +230,6 @@ export class ChatWindowComponent implements OnInit {
     };
   
     
-    
   
     let setBotResponse = function(val) {
       setTimeout(function () {
@@ -194,7 +237,7 @@ export class ChatWindowComponent implements OnInit {
           //if there is no response from Rasa
           msg = 'I couldn\'t get that. Let\'s try something else!';
     
-          var BotResponse = '<img class="botAvatar" src="../../assets/images/botAvatar2.png"><p class="botMsg">' + msg + '</p><div class="clearfix"></div>';
+          var BotResponse = '<img class="botAvatar" src="' + bot.avatarSrc + '"><p class="botMsg">' + msg + '</p><div class="clearfix"></div>';
           $(BotResponse).appendTo('.chats').hide().fadeIn(1000);
     
         } else {
@@ -230,11 +273,11 @@ export class ChatWindowComponent implements OnInit {
                         // Save message to current_chat json
                       today = new Date();
                       let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                      current_chat.messages.push({"content": msg, "msg_time": time, "part_id": "12"});
+                      current_chat.messages.push({"content": msg, "msg_time": time, "part_id": bot.id});
     
                       console.log("MSG: ", msg);
     
-              var BotResponse = '<img class="botAvatar" src="../../assets/images/botAvatar2.png"><p class="botMsg">' + msg + '</p><div class="clearfix"></div>';
+              var BotResponse = '<img class="botAvatar" src="' + bot.avatarSrc + '"><p class="botMsg">' + msg + '</p><div class="clearfix"></div>';
               $(BotResponse).appendTo('.chats').hide().fadeIn(1000);
             }
     

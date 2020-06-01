@@ -1,7 +1,6 @@
 .bot-details {
     height: 35vh;
-    font-size: 1.2rem;
-    font-family: "Comic Sans MS";
+    font-size: 20px;
 }
 
 .avatar {
@@ -17,15 +16,10 @@
     max-height: 30vh;
 }
 
-label.set-avatar {
-    display: block;
-    border: 1px solid black;
-}
-
-.file-input {
-    display: none;
-}
-
 .multiline {
     white-space: pre-wrap;
+}
+
+.updated {
+    border: 3px solid red;
 }

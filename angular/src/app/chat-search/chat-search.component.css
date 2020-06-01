@@ -1,22 +1,49 @@
-.search, .results {
-    font-size: 24px;
+.container {
+    margin: 0 3rem;
+    display: flex;
+    font-family: "Comic Sans MS";
 }
 
-.search input {
-    font-size: 24px;
+.search, .results, .search input, .search button {
+    font-size: 1.2rem;
 }
 
-.search button {
-    font-size: 24px;
+.search label, .search input {
+    display: block;
 }
 
-.results table, th, td {
-    padding: 10px;
+.result {
+    border-radius: 1rem;
     border: 1px solid black;
-    border-collapse: collapse;
+    background-color: #f6f6f6;
+    padding: 1rem;
 }
 
-.results tbody tr:hover {
+.result:hover {
     background-color: #FF6766;
     cursor: pointer;
+}
+
+.page-controls {
+    padding: 1rem 0;
+}
+
+.page-controls label {
+    font-size: 1.5rem;
+    border: 1px solid black;
+    background-color: darkgray;
+    padding: 0.1rem 0.8rem;
+}
+
+.page-controls label:hover {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    visibility: hidden;
+}
+
+input[type="radio"]:checked+label {
+    font-weight: bold;
+    background-color: darkslategray;
 }

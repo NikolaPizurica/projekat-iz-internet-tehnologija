@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000'
+  apiUrl: 'http://localhost:5000',
+  defaultAvi: 'https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg'
 };
 
 /*

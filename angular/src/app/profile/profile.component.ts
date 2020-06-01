@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onAvatarError(e) {
-    e.currentTarget.src = 'https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg';
+    e.currentTarget.src = `${environment.defaultAvi}`;
   }
 
   deleteAvatar() {

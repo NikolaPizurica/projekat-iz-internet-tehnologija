@@ -1,0 +1,25 @@
+<h1>Available bots</h1>
+
+<div *ngFor="let bot of bots; let i = index;" 
+        [ngClass]="{'bot-details': true, 'updated': notifications.includes(bot.id)}">
+    <div class="avatar">
+        <img [src]="bot.avatarSrc" (error)="onAvatarError($event)">
+    </div>
+    <div>
+        <b>Name:</b>
+        <!-- <span>
+            {{bot.bot_name}}
+        </span> -->
+        <label [attr.for]="i">{{bot.bot_name}}</label>
+        <input type="radio" [attr.id]="i" name="bots" [checked]="bots[i].id === currBot.id" (change)="botChanged(i)">
+    </div>
+    <div>
+        <b>Description:</b>
+        <div class="multiline">
+            {{bot.bot_desc}}
+        </div>
+    </div>
+    <div>
+        <b>Contact for suggestions:</b> {{bot.mail}}
+    </div>
+</div>

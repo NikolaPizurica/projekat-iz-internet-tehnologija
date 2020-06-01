@@ -4,7 +4,7 @@ from flask_jwt import JWT, jwt_required, current_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import mysql, secret_key, user_upload, bot_upload, allowed_img_exts
 from auth import authenticate, identity
-from datetime import timedelta
+from datetime import timedelta, datetime
 from os import unlink
 
 # from werkzeug.local import LocalProxy
@@ -13,10 +13,10 @@ from os import unlink
 app = Flask(__name__)
 CORS(app)
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = '***REMOVED***'
-app.config['MYSQL_DATABASE_DB'] = 'it2020'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_USER'] = ''
+app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_DB'] = ''
+app.config['MYSQL_DATABASE_HOST'] = ''
 
 app.config['SECRET_KEY'] = secret_key
 app.config['JWT_AUTH_URL_RULE'] = '/login'
@@ -30,18 +30,18 @@ jwt = JWT(app, authenticate, identity)
 
 @app.before_request
 def before_request():
-    g.db = mysql.connect()
+    g.conn = mysql.connect()
+    g.cursor = g.conn.cursor()
 
 @app.teardown_request
 def teardown_request(exception):
-    g.db.close()
+    g.cursor.close()
+    g.conn.close()
 
 
 @jwt.auth_response_handler
 def response_handler(access_token, identity):
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    cursor = g.cursor
 
     cmd_txt = """select p.id, p.mail, u.username, u.pass 
                 from EndUser u inner join Participant p on u.id = p.id 
@@ -54,8 +54,6 @@ def response_handler(access_token, identity):
     cursor.execute(cmd_txt, args)
     admin_res = cursor.fetchone()
 
-    cursor.close()
-    #conn.close()
     return jsonify({
                         'token': access_token.decode('utf-8'),
                         'id': user_res[0],
@@ -81,9 +79,7 @@ def hello():
 # dovlacenje avatara sa servera (isto i za botove i za korisnike)
 @app.route('/get_avatar', methods=['GET'])
 def get_avatar():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    cursor = g.cursor
     try:
         id = request.args['id']
         cmd_txt = "select avi_path from Participant where id = %s"
@@ -91,13 +87,26 @@ def get_avatar():
         cursor.execute(cmd_txt, cmd_args)
         avi_path = cursor.fetchone()[0]
 
-        cursor.close()
-        #conn.close()
         return send_file(avi_path)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 1, "message": "Invalid ID / No avatar uploaded for user"}', 400)
+
+
+@app.route('/notifications', methods=['GET'])
+def get_notifications():
+    cursor = g.cursor
+    try:
+        cmd_txt = "select * from Notification where ts > %s"
+        cmd_args = (request.args['ts'],)
+        cursor.execute(cmd_txt, cmd_args)
+
+        notifications = []
+        for row in cursor.fetchall():
+            notifications.append(row[1])
+
+        return make_response(jsonify(notifications), 200)
+    except:
+        return make_response('{"code": 1, "message": "Missing fields in request body"}', 400)
 
 
 ##########################################
@@ -108,9 +117,7 @@ def get_avatar():
 # svako moze da vidi koji botovi postoje
 @app.route('/list_bots', methods=['GET'])
 def list_bots():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    cursor = g.cursor
     
     cmd_txt = "select b.id, b.bot_name, b.bot_desc, b.rest_endpoint, p.avi_path, p.mail " \
               "from bot b inner join participant p on b.id = p.id"
@@ -127,8 +134,6 @@ def list_bots():
                     'mail': row[5]
                 } for row in query_res]}
     
-    cursor.close()
-    #conn.close()
     return make_response(jsonify(data), 200)
 
 
@@ -152,9 +157,8 @@ def set_bot_avatar():
     
     img_ext = file.filename.rsplit('.', 1)[1].lower()
 
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
 
     if file and img_ext in allowed_img_exts:
         id = request.args['bot_id']
@@ -175,21 +179,16 @@ def set_bot_avatar():
         file.save(new_path)
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Avatar uploaded and set successfully"}', 201)
     else:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 4, "message": "File extension not allowed"}', 400)
 
 
 @app.route('/change_bot_name', methods=['PUT'])
 @jwt_required()
 def change_bot_name():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         bot_id = request.json['bot_id']
         cmd_txt = "update Bot set bot_name = %s where id = %s"
@@ -197,34 +196,32 @@ def change_bot_name():
         cursor.execute(cmd_txt, cmd_args)
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Bot name changed successfully"}', 200)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 1, "message": "Missing fields in request body"}', 400)
 
 
 @app.route('/change_bot_desc', methods=['PUT'])
 @jwt_required()
 def change_bot_desc():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         bot_id = request.json['bot_id']
         cmd_txt = "update Bot set bot_desc = %s where id = %s"
         cmd_args = (request.json['bot_desc'], bot_id)
         cursor.execute(cmd_txt, cmd_args)
+
+        ts = str(datetime.now())
+        ts = ts[:ts.index('.')]
+        cmd_txt = "insert into Notification(bot_id, ts) values (%s, %s)"
+        cmd_args = (bot_id, ts)
+        cursor.execute(cmd_txt, cmd_args)
+
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Bot description changed successfully"}', 200)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 1, "message": "Missing fields in request body"}', 400)
 
 
@@ -235,9 +232,8 @@ def change_bot_desc():
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         data = request.get_json()
         cmd_txt = "insert into Participant(mail) values (%s)"
@@ -251,12 +247,8 @@ def create_user():
 
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "User created successfully"}', 201)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 1, "message": "Mail address already in use"}', 409)
 
 
@@ -264,9 +256,8 @@ def create_user():
 @app.route('/delete_user', methods=['DELETE'])
 @jwt_required()
 def delete_user():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         id = current_identity.id
         data = request.get_json()
@@ -278,8 +269,6 @@ def delete_user():
         id, pass_hash, avi_path = cursor.fetchone()
         # (9, 'TestUser', '78ddc855...', None)
         if not check_password_hash(pass_hash, data['password']):
-            cursor.close()
-            #conn.close()
             return make_response('{"code": 1, "message": "Unauthorized: wrong password"}', 401)
 
         cmd_txt = "select chat_num from Chat where user_id = %s"
@@ -308,12 +297,8 @@ def delete_user():
 
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Account deleted successfully"}', 200)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 2, "message": "Missing fields in request body"}', 400)
 
 
@@ -333,9 +318,8 @@ def set_user_avatar():
     
     img_ext = file.filename.rsplit('.', 1)[1].lower()
 
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
 
     if file and img_ext in allowed_img_exts:
         id = current_identity.id
@@ -355,13 +339,8 @@ def set_user_avatar():
         file.save(new_path)
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Avatar uploaded and set successfully"}', 201)
-
     else:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 4, "message": "File extension not allowed"}', 400)
 
 
@@ -369,9 +348,8 @@ def set_user_avatar():
 @app.route('/remove_user_avatar', methods=['DELETE'])
 @jwt_required()
 def remove_avatar():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     
     id = current_identity.id
     cmd_txt = "select avi_path from Participant where id = %s"
@@ -387,21 +365,16 @@ def remove_avatar():
 
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Avatar removed successfully"}', 200)
     else:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "No avatar to remove"}', 200)
 
 
 @app.route('/change_username', methods=['PUT'])
 @jwt_required()
 def change_username():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         id = current_identity.id
         cmd_txt = "update EndUser set username = %s where id = %s"
@@ -409,21 +382,16 @@ def change_username():
         cursor.execute(cmd_txt, cmd_args)
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Username changed successfully"}', 200)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 1, "message": "Missing fields in request body"}', 400)
 
 
 @app.route('/change_password', methods=['PUT'])
 @jwt_required()
 def change_password():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         id = current_identity.id
         cmd_txt = "select pass from EndUser where id = %s"
@@ -432,8 +400,6 @@ def change_password():
 
         pass_hash = cursor.fetchone()[0]
         if not check_password_hash(pass_hash, request.json['old_password']):
-            cursor.close()
-            #conn.close()
             return make_response('{"code": 1, "message": "Unauthorized: wrong password"}', 401)
         
         cmd_txt = "update EndUser set pass = %s where id = %s"
@@ -441,12 +407,8 @@ def change_password():
         cursor.execute(cmd_txt, cmd_args)
         conn.commit()
         
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Password changed successfully"}', 200)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 2, "message": "Missing fields in request body"}', 400)
 
 
@@ -459,9 +421,8 @@ def change_password():
 @app.route('/save_chat', methods=['POST'])
 @jwt_required()
 def save_chat():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         id = current_identity.id
         data = request.get_json()
@@ -477,12 +438,8 @@ def save_chat():
         
         conn.commit()
         
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Chat saved successfully"}', 201)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 1, "message": "Missing fields in request body"}', 400)
 
 
@@ -490,9 +447,7 @@ def save_chat():
 @app.route('/search_chats', methods=['GET'])
 @jwt_required()
 def search_chats():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    cursor = g.cursor
     
     id = current_identity.id
     
@@ -522,8 +477,6 @@ def search_chats():
                     #'user_id': row[3]
                 } for row in query_res]}
 
-    cursor.close()
-    #conn.close()
     return make_response(jsonify(data), 200)
 
 
@@ -531,9 +484,8 @@ def search_chats():
 @app.route('/delete_chat', methods=['DELETE'])
 @jwt_required()
 def delete_chat():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    conn = g.conn
+    cursor = g.cursor
     try:
         id = current_identity.id
         data = request.get_json()
@@ -545,12 +497,8 @@ def delete_chat():
         query_res = cursor.fetchone()
         if query_res:
             if id != query_res[0]:
-                cursor.close()
-                #conn.close()
                 return make_response('{"code": 1, "message": "Unauthorized"}', 401)
         else:
-            cursor.close()
-            #conn.close()
             return make_response('{"code": 2, "message": "No chat with given number"}', 400)
 
         cmd_txt = "delete from Message where chat_num = %s"
@@ -562,21 +510,15 @@ def delete_chat():
         cursor.execute(cmd_txt, cmd_args)
         conn.commit()
 
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 0, "message": "Chat deleted successfully"}', 200)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 3, "message": "Missing fields in request body"}', 400)
 
 
 @app.route('/get_chat', methods=['GET'])
 @jwt_required()
 def get_chat():
-    #conn = mysql.connect()
-    conn = g.db
-    cursor = conn.cursor()
+    cursor = g.cursor
     try:
         id = current_identity.id
         cmd_txt = "select * from Chat where chat_num = %s"
@@ -585,8 +527,6 @@ def get_chat():
         query_res = cursor.fetchone()
 
         if id != query_res[3]:
-            cursor.close()
-            #conn.close()
             return make_response('{"code": 1, "message": "Unauthorized"}', 401)
         
         response = {'chat_num': query_res[0],
@@ -605,10 +545,6 @@ def get_chat():
                                 'part_id': message[3]}
                                 for message in query_res]
         
-        cursor.close()
-        #conn.close()
         return make_response(jsonify(response), 200)
     except:
-        cursor.close()
-        #conn.close()
         return make_response('{"code": 3, "message": "Missing parameters in request"}', 400)

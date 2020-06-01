@@ -1,24 +1,28 @@
-<h1>
+<h2>
     Chat details:
-</h1>
+</h2>
 
-<div class="details-header">
-    <div>
-        Number: {{chat.chat_num}}
-    </div>
-    <div>
-        Title: {{chat.title}}
-    </div>
-    <div>
-        Date: {{chat.chat_date}}
-    </div>
-</div>
+<div class="container" [@chatChanged]="chatService.chat.chat_num">
 
-<div class="messages">
-    <div *ngFor="let msg of chat.messages">
-        <span [ngClass]="{'right': msg.part_id === chat.user_id, 'left': msg.part_id !== chat.user_id}">
-            {{msg.content}}
-        </span>
-        <br>
+    <div class="details-header">
+        <div>
+            Number: {{chatService.chat.chat_num}}
+        </div>
+        <div>
+            Title: {{chatService.chat.title}}
+        </div>
+        <div>
+            Date: {{chatService.chat.chat_date}}
+        </div>
     </div>
+
+    <div class="messages">
+        <div *ngFor="let msg of chatService.chat.messages" style="clear:both; overflow:auto;">
+            <div [ngClass]="{'message': true, 'right': msg.part_id === chatService.chat.user_id, 'left': msg.part_id !== chatService.chat.user_id}">
+                <p class="content">{{msg.content}}</p>
+                <p class="time">{{msg.msg_time}}</p>
+            </div>
+        </div>
+    </div>
+
 </div>
