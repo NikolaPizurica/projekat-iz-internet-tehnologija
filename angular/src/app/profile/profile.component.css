@@ -26,6 +26,15 @@ button {
     font-size: 1.3rem;
     font-family: "Comic Sans MS";
     cursor: pointer;
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: darkgray;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #FF6766;
 }
 
 label[for="file"] {
@@ -36,6 +45,10 @@ label[for="file"] {
     background-color: darkgray;
     text-align: center;
     cursor: pointer;
+}
+
+label[for="file"]:hover {
+    background-color: #FF6766;
 }
 
 #file {

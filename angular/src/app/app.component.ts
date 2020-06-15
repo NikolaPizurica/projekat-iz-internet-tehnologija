@@ -93,4 +93,14 @@ export class AppComponent {
     this.router.navigate(['/bots']);
   }
 
+  openSettings() {
+    let settings: HTMLDivElement = document.querySelector('#settings');
+    if (settings.style.display == "none") {
+      settings.style.display = "block";
+    }
+    else {
+      settings.style.display = "none";
+    }
+  }
+
 }

@@ -1,25 +1,85 @@
+h1 {
+    margin: 3rem;
+    font-family: "Comic Sans MS";
+    text-align: center;
+}
+
 .bot-details {
     height: 35vh;
-    font-size: 20px;
+    font-size: 1.2rem;
+    font-family: "Comic Sans MS";
+    margin: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .avatar {
-    float: left;
     max-width: 35vh;
     max-height: 100%;
 }
 
 .avatar img {
     display: block;
+    border: 1px solid black;
     border-radius: 50%;
     max-width: 30vh;
     max-height: 30vh;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+label.select-bot {
+    display: block;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    background-color: darkgray;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    margin: auto;
+}
+
+input[type="radio"]:checked + label {
+    background-image: url('../../assets/images/tick.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .multiline {
     white-space: pre-wrap;
 }
 
+@keyframes border-pulsate {
+    0%   { border-width: 1px; }
+    25%  { border-width: 3px; }
+    50%  { border-width: 5px; }
+    75%  { border-width: 3px; }
+    100% { border-width: 1px; }
+}
+
 .updated {
     border: 3px solid red;
+    border-radius: 1rem;
+    animation: border-pulsate 1s infinite;
+}
+
+.bot-data {
+    overflow-y: scroll;
+    margin: 0 3rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid black;
+    background-color: #f6f6f6;
+}
+
+::-webkit-scrollbar {
+    width: 0.4rem;
+}
+
+input[type="radio"] {
+    width: 1.5rem;
+    height: 1.5rem;
 }

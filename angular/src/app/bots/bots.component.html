@@ -4,22 +4,25 @@
         [ngClass]="{'bot-details': true, 'updated': notifications.includes(bot.id)}">
     <div class="avatar">
         <img [src]="bot.avatarSrc" (error)="onAvatarError($event)">
+        <input type="radio" [attr.id]="'select'+bot.id" name="bots" [checked]="bots[i].id === currBot.id" (change)="botChanged(i)">
+        <label [attr.for]="'select'+bot.id" class="select-bot"></label>
     </div>
-    <div>
-        <b>Name:</b>
-        <!-- <span>
+    <div class="bot-data">
+        <div>
+            <b>Name:</b>
+            <!-- <span>
+                {{bot.bot_name}}
+            </span> -->
             {{bot.bot_name}}
-        </span> -->
-        <label [attr.for]="i">{{bot.bot_name}}</label>
-        <input type="radio" [attr.id]="i" name="bots" [checked]="bots[i].id === currBot.id" (change)="botChanged(i)">
-    </div>
-    <div>
-        <b>Description:</b>
-        <div class="multiline">
-            {{bot.bot_desc}}
         </div>
-    </div>
-    <div>
-        <b>Contact for suggestions:</b> {{bot.mail}}
+        <div>
+            <b>Description:</b>
+            <div class="multiline">
+                {{bot.bot_desc}}
+            </div>
+        </div>
+        <div>
+            <b>Contact for suggestions:</b> {{bot.mail}}
+        </div>
     </div>
 </div>

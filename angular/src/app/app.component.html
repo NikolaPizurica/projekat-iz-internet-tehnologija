@@ -21,8 +21,15 @@
 
         <div *ngIf="currentUser" class="btn btn-one" (click)="logout()"><span>LOGOUT</span></div>
     
-        <label for="toggle-notifications">Notifications</label>
-        <input type="checkbox" id="toggle-notifications" (change)="toggleNotifications($event)" checked>
+        <div class="btn btn-one" routerLink="/description"><span>DESCRIPTION</span></div>
+
+        <div *ngIf="currentUser" class="btn btn-one" (click)="openSettings()"><span>SETTINGS</span></div>
+
+        <div id="settings">
+            <label for="toggle-notifications">Notifications</label>
+            <input type="checkbox" id="toggle-notifications" (change)="toggleNotifications($event)" checked>
+            <label for="toggle-notifications" class="selection"></label>
+        </div>
     </nav>
 
     <router-outlet></router-outlet>

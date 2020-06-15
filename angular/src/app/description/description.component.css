@@ -1,0 +1,27 @@
+* {
+    font-family: "Comic Sans MS";
+}
+
+p, ul {
+    font-size: 1.2rem;
+}
+
+#header > h1 {
+    display: inline-block;
+}
+
+a.btn {
+    font-size: 1.2rem;
+    font-family: "Comic Sans MS";
+    border-radius: 0.5rem;
+    border: 1px solid black;
+    text-decoration: none;
+    background-color: darkgray;
+    color: black;
+    margin-left: 3rem;
+    padding: 0.5rem;
+}
+
+a.btn:hover {
+    background-color: #FF6766;
+}

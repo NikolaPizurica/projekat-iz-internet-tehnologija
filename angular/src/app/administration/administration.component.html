@@ -6,31 +6,33 @@
         <label [attr.for]="'file'+bot.id" class="set-avatar">Set new avatar</label>
         <input type="file" [attr.id]="'file'+bot.id" class="file-input" (change)="changeAvatar(bot, $event)"/>
     </div>
-    <div>
-        <b>Name:</b>
-        <span *ngIf="editing[i][0]">
-            <input type="text" [value]="bot.bot_name" [attr.id]="'botname'+i"/>
-        </span>
-        <span *ngIf="!editing[i][0]">
-            {{bot.bot_name}}
-        </span>
-        <button *ngIf="editing[i][0]" (click)="changeBotName(i)">Save</button>
-        <button *ngIf="editing[i][0]" (click)="editing[i][0] = false;">Cancel</button>
-        <button *ngIf="!editing[i][0]" (click)="editing[i][0] = true;">Edit</button>
-    </div>
-    <div>
-        <b>Description:</b>
-        <div *ngIf="editing[i][1]">
-            <textarea [value]="bot.bot_desc" [attr.id]="'botdesc'+i" rows="3"></textarea>
+    <div class="bot-data">
+        <div>
+            <b>Name:</b>
+            <span *ngIf="editing[i][0]">
+                <input type="text" [value]="bot.bot_name" [attr.id]="'botname'+i"/>
+            </span>
+            <span *ngIf="!editing[i][0]">
+                {{bot.bot_name}}
+            </span>
+            <button *ngIf="editing[i][0]" (click)="changeBotName(i)">Save</button>
+            <button *ngIf="editing[i][0]" (click)="editing[i][0] = false;">Cancel</button>
+            <button *ngIf="!editing[i][0]" (click)="editing[i][0] = true;">Edit</button>
         </div>
-        <div *ngIf="!editing[i][1]" class="multiline">
-            {{bot.bot_desc}}
+        <div>
+            <b>Description:</b>
+            <div *ngIf="editing[i][1]">
+                <textarea [value]="bot.bot_desc" [attr.id]="'botdesc'+i" rows="3" cols="30"></textarea>
+            </div>
+            <div *ngIf="!editing[i][1]" class="multiline">
+                {{bot.bot_desc}}
+            </div>
+            <button *ngIf="editing[i][1]" (click)="changeBotDesc(i)">Save</button>
+            <button *ngIf="editing[i][1]" (click)="editing[i][1] = false;">Cancel</button>
+            <button *ngIf="!editing[i][1]" (click)="editing[i][1] = true;">Edit</button>
         </div>
-        <button *ngIf="editing[i][1]" (click)="changeBotDesc(i)">Save</button>
-        <button *ngIf="editing[i][1]" (click)="editing[i][1] = false;">Cancel</button>
-        <button *ngIf="!editing[i][1]" (click)="editing[i][1] = true;">Edit</button>
-    </div>
-    <div>
-        <b>Contact for suggestions:</b> {{bot.mail}}
+        <div>
+            <b>Contact for suggestions:</b> {{bot.mail}}
+        </div>
     </div>
 </div>

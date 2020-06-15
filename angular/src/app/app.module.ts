@@ -17,6 +17,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { BotsComponent } from './bots/bots.component';
+import { DescriptionComponent } from './description/description.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BotsComponent } from './bots/bots.component';
     RegistrationComponent,
     ProfileComponent,
     AdministrationComponent,
-    BotsComponent
+    BotsComponent,
+    DescriptionComponent
   ],
   imports: [
     BrowserModule,

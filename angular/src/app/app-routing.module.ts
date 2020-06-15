@@ -12,6 +12,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AdministrationComponent } from './administration/administration.component'
 import { BotsComponent } from './bots/bots.component';
+import { DescriptionComponent } from './description/description.component';
 
 const routes: Routes = [
   { path: '', component: ChatWindowComponent},
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'bots', component: BotsComponent},
   { path: 'administration', component: AdministrationComponent, canActivate: [AdminGuard]},
+  { path: 'description', component: DescriptionComponent},
 
   // redirect
   { path: '**', redirectTo: '' }

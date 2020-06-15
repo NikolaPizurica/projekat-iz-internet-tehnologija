@@ -22,10 +22,41 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #FF6766;
+	background-color: #FF6766;
 }
 
+#settings {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 110px;
+	font-family: "Comic Sans MS";
+	font-size: 1.5rem;
+	border-radius: 1rem;
+	background-color: rgba(255,103,102,0.6);
+	padding: 1rem;
+}
 
+.selection {
+	display: block;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    background-color: darkgray;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    margin: auto;
+}
+
+#toggle-notifications {
+	display: none;
+}
+
+#toggle-notifications:checked + label {
+    background-image: url('../assets/images/tick.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 
 .btn {

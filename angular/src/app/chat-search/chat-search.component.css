@@ -12,6 +12,16 @@
     display: block;
 }
 
+button.btn {
+    font-size: 1.2rem;
+    font-family: "Comic Sans MS";
+    border-radius: 0.5rem;
+}
+
+button.btn:hover {
+    background-color: #FF6766;
+}
+
 .result {
     border-radius: 1rem;
     border: 1px solid black;
