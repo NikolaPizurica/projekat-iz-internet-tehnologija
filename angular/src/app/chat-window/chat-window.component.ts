@@ -131,6 +131,21 @@ export class ChatWindowComponent implements OnInit {
         case 'ž':
           text = text.slice(0, i) + 'z' + text.slice(i+1);
           break;
+        case 'Č':
+          text = text.slice(0, i) + 'C' + text.slice(i+1);
+          break;
+        case 'Ć':
+          text = text.slice(0, i) + 'C' + text.slice(i+1);
+          break;
+        case 'Đ':
+          text = text.slice(0, i) + 'Dj' + text.slice(i+1);
+          break;
+        case 'Š':
+          text = text.slice(0, i) + 'S' + text.slice(i+1);
+          break;
+        case 'Ž':
+          text = text.slice(0, i) + 'Z' + text.slice(i+1);
+          break;
       }
     }
     return text;
