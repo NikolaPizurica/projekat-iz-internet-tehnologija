@@ -3,16 +3,6 @@ actions:
 - action_fetch_info
 - action_hello_world
 - action_tell_joke
-- utter_ask_cheer
-- utter_ask_for_name
-- utter_ask_joke
-- utter_cheer_up
-- utter_did_that_help
-- utter_goodbye
-- utter_greet
-- utter_happy
-- utter_iamabot
-- utter_nice_to_meet
 entities:
 - names
 - search_terms
@@ -20,11 +10,7 @@ intents:
 - greet
 - first_name
 - fetch_info
-- goodbye
 - affirm
-- deny
-- mood_great
-- mood_unhappy
 responses:
   utter_ask_cheer:
   - text: Oćeš da vidiš nešto što će da te oraspoloži?
@@ -54,5 +40,5 @@ slots:
     initial_value: brate
     type: text
   search_terms:
-    initial_value: Pojma nemam. Ličim li ti ja na enciklopediju?
+    initial_value: Pojma nemam
     type: text

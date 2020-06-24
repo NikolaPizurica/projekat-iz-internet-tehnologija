@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import * as $ from 'jquery';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { AuthService } from '../auth/auth.service'
 import { environment } from '../../environments/environment';
@@ -14,15 +13,13 @@ import { Bot } from '../models/bot';
 @Component({
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
-  styleUrls: [  './chat-window.component.css']//, '../../assets/css/materialize.min.css'],
-  //encapsulation: ViewEncapsulation.None // Remove Added css rules 
-  
+  styleUrls: [  './chat-window.component.css']
 })
 
 
 export class ChatWindowComponent implements OnInit {
  
-  user: User;
+  user: User = null;
   userId: number;
   userAvi = '';
   bot: Bot;
@@ -36,7 +33,8 @@ export class ChatWindowComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               private authService: AuthService,
-              private botService: BotService) { 
+              private botService: BotService,
+              public sanitizer: DomSanitizer) { 
   }
 
   ngOnInit(): void {
@@ -153,6 +151,7 @@ export class ChatWindowComponent implements OnInit {
 
   onUserInput(e) {
     let input = <HTMLInputElement>document.querySelector('#keypad');
+    let msgs = <HTMLDivElement>document.querySelector('#messages');
     const keyCode = e.keyCode || e.which;
     const text = this.filterLetters(input.value);
     if (keyCode === 13) {
@@ -166,6 +165,9 @@ export class ChatWindowComponent implements OnInit {
         console.log(text);
         let time = this.getCurrTime();
         this.currChat.messages.push({"content": text, "msg_time": time, "part_id": this.userId});
+        setTimeout(() => {
+          msgs.scrollTop = msgs.scrollHeight - msgs.clientHeight;
+        }, 200);
         let message = text;
         let sender = 'User' + this.userId;
         this.httpClient.post(this.bot.rest_endpoint, {message, sender})
@@ -173,15 +175,40 @@ export class ChatWindowComponent implements OnInit {
           console.log(data);
           time = this.getCurrTime();
           for (let i = 0; i < (<Array<Object>>data).length; i++) {
-            this.currChat.messages.push({"content": data[i].text, "msg_time": time, "part_id": this.bot.id});
+            let content = '';
+            if (data[i].text) {
+              content = data[i].text;
+            }
+            else if (data[i].attachment) {
+              content = data[i].attachment;
+            }
+            this.currChat.messages.push({"content": content, "msg_time": time, "part_id": this.bot.id});
           }
+          setTimeout(() => {
+            msgs.scrollTop = msgs.scrollHeight - msgs.clientHeight;
+          }, 200);
         },
         (err) => {
           time = this.getCurrTime();
           this.currChat.messages.push({"content": 'Poruka nije stigla do mog servera. Provjeri konekciju.', "msg_time": time, "part_id": this.bot.id});
+          setTimeout(() => {
+            msgs.scrollTop = msgs.scrollHeight - msgs.clientHeight;
+          }, 200);
         });
       }
     }
+  }
+
+  isImage(str) {
+    return /^.*imgur.*$/.test(str);
+  }
+
+  isVideo(str) {
+    return /^.*youtube.*$/.test(str);
+  }
+
+  convertToEmbed(str) {
+    return str.replace(/watch\?v=/, 'embed/')
   }
   
 }

@@ -1,13 +1,16 @@
 <div id="container">
    <div id="header">
-      <button id="button-save-chat" (click)="saveChat()">Save Chat</button>
-      <a href="#" (click)="closeWindow()">X</a>
+      <button *ngIf="user" id="btn-save-chat" (click)="saveChat()">Save Chat</button>
+      <button *ngIf="!user" style="visibility: hidden;"></button>
+      <button id="btn-close" (click)="closeWindow()">X</button>
    </div>
    <div id="messages">
       <div *ngFor="let msg of currChat.messages" style="clear:both; overflow:auto;">
          <div [ngClass]="{'message': true, 'right': msg.part_id === userId, 'left': msg.part_id !== userId}">
             <img class="avatar" [src]="msg.part_id === userId ? userAvi : bot.avatarSrc" (error)="onAvatarError($event)">
-            <p class="content">{{msg.content}}</p>
+            <img class="meme" *ngIf="isImage(msg.content)" [src]="msg.content">
+            <a *ngIf="isVideo(msg.content)" [href]="msg.content">{{msg.content}}</a>
+            <p *ngIf="!isImage(msg.content) && !isVideo(msg.content)" class="content">{{msg.content}}</p>
             <p class="time">{{msg.msg_time}}</p>
          </div>
       </div>

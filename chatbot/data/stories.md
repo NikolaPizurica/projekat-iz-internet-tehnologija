@@ -4,11 +4,7 @@
   - action_ask_for_name
 * first_name
   - action_hello_world
+* affirm
+  - action_tell_joke
 
 
-## ask for info
-* fetch_info
-  - action_fetch_info
-
-## tell joke
-- action_tell_joke

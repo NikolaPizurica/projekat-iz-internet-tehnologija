@@ -14,6 +14,7 @@ import { environment } from '../../environments/environment';
 export class RegistrationComponent implements OnInit {
   registrationForm: FormGroup;
   mailAlreadyInUse: boolean = false;
+  passwordsDontMatch: boolean = false;
 
   constructor(private router: Router,
               private httpClient: HttpClient,
@@ -32,6 +33,15 @@ export class RegistrationComponent implements OnInit {
   get f() { return this.registrationForm.controls; }
 
   onSubmit(mail, username, password) {
+    this.mailAlreadyInUse = false;
+    this.passwordsDontMatch = false;
+    if (this.registrationForm.invalid) {
+      return;
+    }
+    if (this.f.password.value !== this.f.confirmPassword.value) {
+      this.passwordsDontMatch = true;
+      return;
+    }
     this.httpClient.post<any>(`${environment.apiUrl}/create_user`, { mail, username, password })
       .subscribe(
         (res) => {

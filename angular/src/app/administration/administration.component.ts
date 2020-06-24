@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'node_modules/ngx-spinner';
 
 import { environment } from '../../environments/environment';
 import { Bot } from '../models/bot'
@@ -18,7 +19,8 @@ export class AdministrationComponent implements OnInit {
 
   constructor(private router: Router,
               private httpClient: HttpClient,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.httpClient.get<any>(`${environment.apiUrl}/list_bots`)
@@ -51,6 +53,7 @@ export class AdministrationComponent implements OnInit {
   }
 
   changeBotName(index) {
+    this.spinner.show();
     let bot_id = this.bots[index].id;
     let bot_name = (<HTMLInputElement>document.querySelector('#botname' + index)).value;
     this.httpClient.put(`${environment.apiUrl}/change_bot_name`, {bot_id, bot_name})
@@ -58,10 +61,12 @@ export class AdministrationComponent implements OnInit {
         console.log(res);
         this.bots[index].bot_name = bot_name;
         this.editing[index][0] = false;
+        this.spinner.hide();
       });
   }
 
   changeBotDesc(index) {
+    this.spinner.show();
     let bot_id = this.bots[index].id;
     let bot_desc = (<HTMLTextAreaElement>document.querySelector('#botdesc' + index)).value;
     this.httpClient.put(`${environment.apiUrl}/change_bot_desc`, {bot_id, bot_desc})
@@ -69,6 +74,7 @@ export class AdministrationComponent implements OnInit {
         console.log(res);
         this.bots[index].bot_desc = bot_desc;
         this.editing[index][1] = false;
+        this.spinner.hide();
       });
   }
 

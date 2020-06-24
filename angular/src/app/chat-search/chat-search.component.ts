@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'node_modules/ngx-spinner'
+import { NgxSpinnerService } from 'node_modules/ngx-spinner';
 
 import { environment } from '../../environments/environment';
 import { Chat } from '../models/chat';
