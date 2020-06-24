@@ -13,6 +13,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AdministrationComponent } from './administration/administration.component'
 import { BotsComponent } from './bots/bots.component';
 import { DescriptionComponent } from './description/description.component';
+import { WebSearchComponent } from './web-search/web-search.component';
 
 const routes: Routes = [
   { path: '', component: ChatWindowComponent},
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'bots', component: BotsComponent},
   { path: 'administration', component: AdministrationComponent, canActivate: [AdminGuard]},
   { path: 'description', component: DescriptionComponent},
+  { path: 'web_search', component: WebSearchComponent},
 
   // redirect
   { path: '**', redirectTo: '' }

@@ -57,3 +57,12 @@ input[type="radio"]:checked+label {
     font-weight: bold;
     background-color: darkslategray;
 }
+
+#chat-container {
+    flex: 1;
+}
+
+#chat-details {
+    margin: auto;
+    max-width: 70%;
+}

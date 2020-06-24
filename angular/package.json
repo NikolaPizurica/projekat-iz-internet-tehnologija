@@ -23,6 +23,7 @@
     "amqp-ts": "^1.8.0",
     "file-saver": "^2.0.2",
     "jquery": "^3.5.0",
+    "ngx-spinner": "^9.0.2",
     "rxjs": "~6.5.4",
     "save": "^2.4.0",
     "stompjs": "^2.3.3",

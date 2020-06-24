@@ -1,0 +1,66 @@
+* {
+    font-family: "Comic Sans MS";
+}
+
+#search-bar {
+    margin: 0.5rem;
+    padding: 1rem;
+}
+
+#search-bar > h1 {
+    margin: 0 0 1rem 0;
+}
+
+#search-bar > input[type="text"] {
+    font-size: 1.4rem;
+    border-radius: 0.4rem;
+}
+
+#search-bar > button {
+    font-size: 1.4rem;
+    border-radius: 0.4rem;
+}
+
+#search-bar > button:hover {
+    background-color: #FF6766;
+}
+
+.result {
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid black;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.result > a {
+    font-size: 1.4rem;
+}
+
+.result > p {
+    font-size: 1.2rem;
+}
+
+.page-controls {
+    padding: 1rem 0;
+}
+
+.page-controls label {
+    font-size: 1.5rem;
+    border: 1px solid black;
+    background-color: darkgray;
+    padding: 0.1rem 0.8rem;
+}
+
+.page-controls label:hover {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    visibility: hidden;
+}
+
+input[type="radio"]:checked+label {
+    font-weight: bold;
+    background-color: darkslategray;
+}

@@ -1,62 +1,63 @@
+## intent:greet
+- cao
+- zdravo
 
+## intent:first_name
+- ja sam [Igor](names)[Igor](names)
+- ja sam [Nikola](names)
+- ja sam [Luka](names)
+- ja sam [Milica](names)
+- ja sam [Petra](names)
+- zovem se [Igor](names), ti?
+- zovem se [Lita](names), ti?
+- zovem se [Anja](names), ti?
+- zovem se [Mara](names), ti?
+- [Igor](names), ti brate?
+- [Marko](names), ti brate?
+- [Ivana](names), ti brate?
+- [Goran](names), ti brate?
+- zovem se [Pavle](names)
+- zovem se [Mirko](names)
+- zovem se [Guile](names)
+- zovem se [Dzanan](names)
+- ja sam [Igor](names), [ti](search_terms)?
+- ja sam [Igor](names)[Igor](names)
+
+## intent:fetch_info
+- sta znas o [drugom svetskom ratu](search_terms)?
+- sta znas o [Vikinzima](search_terms)?
+- sta znas o [Marku Polu](search_terms)?
+- sta znas o [Katarini velikoj](search_terms)?
+- sta znas o [Tolstoju](search_terms)
+- sta znas o [Portugalu](search_terms)
+- sta znas o [Balkanu](search_terms)
+- sta znas o [Americi](search_terms)
+- sta znas o [drugom svjetskom ratu](search_terms)?
+- sta znas o [Flojd Mejveteru](search_terms)?
+- sta znas o [Ajnstajnu](search_terms)
 
 ## intent:goodbye
-- bye
-- goodbye
-- see you around
-- see you later
+- vidimo se
+- pozdrav
+- dovidjenja
 
 ## intent:affirm
-- yes
-- indeed
-- of course
-- that sounds good
-- correct
-- Ok
+- da
+- jeste
 
 ## intent:deny
-- no
-- never
-- I don't think so
-- don't like that
-- no way
-- not really
+- ne
+- nije
 
 ## intent:mood_great
-- perfect
-- very good
-- great
-- amazing
-- wonderful
-- I am feeling very good
-- I am great
-- I'm good
+- super
+- dobro
 
 ## intent:mood_unhappy
-- sad
-- very sad
-- unhappy
-- bad
-- very bad
-- awful
-- terrible
-- not very good
-- extremely sad
-- so sad
+- lose
 
-## intent:bot_challenge
-- are you a bot?
-- are you a human?
-- am I talking to a bot?
-- am I talking to a human?
-- who are you?
-- who am i talking to?
-- who are you
+## lookup:names.txt
+  data/names/names.txt
 
-## intent:greet
-- hello
-- hi
-- HI
-
-## intent:working_with
-- who are you working for
+## lookup:search_terms.txt
+  data/search_terms/search_terms.txt

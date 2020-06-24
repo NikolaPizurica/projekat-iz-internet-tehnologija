@@ -15,6 +15,8 @@ pipeline:
   - name: EntitySynonymMapper
   - name: ResponseSelector
     epochs: 100
+  - name: intent_entity_featurizer_regex
+  - name: ner_crf
 
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/

@@ -1,0 +1,20 @@
+<div id="search-bar">
+    <h1>Google Web Search</h1>
+    <input type="text" id="search-box">
+    <button (click)="search()">Search</button>
+</div>
+
+<div id="search-results">
+    <div *ngFor="let org of webData.organic.slice(currPage*pageLen, (currPage+1)*pageLen)" class="result">
+        <a [attr.href]="org.url">{{org.title}}</a>
+        <p [innerHtml]="org.snippet"></p>
+    </div>
+    <div class="page-controls">
+        <span *ngFor="let _ of [].constructor(numOfPages); let i = index">
+            <input type="radio" [attr.id]="'page'+i" name="pages" [checked]="i === 0" (change)="pageChanged(i)">
+            <label [attr.for]="'page'+i">{{i+1}}</label>
+        </span>
+    </div>
+</div>
+
+<ngx-spinner [fullScreen]="true"></ngx-spinner>

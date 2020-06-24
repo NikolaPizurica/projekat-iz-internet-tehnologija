@@ -14,14 +14,14 @@
         <div *ngIf="currentUser" class="btn btn-one" routerLink="/profile"><span>MY PROFILE</span></div>
 
         <div *ngIf="currentUser && currentUser.admin" class="btn btn-one" routerLink="/administration"><span>ADMINISTRATION</span></div>
+    
+        <div class="btn btn-one" routerLink="/description"><span>DESCRIPTION</span></div>
+
+        <div class="btn btn-one" routerLink="/web_search"><span>WEB SEARCH</span></div>
 
         <div *ngIf="!currentUser" class="btn btn-one" routerLink="/login"><span>LOGIN</span></div>
         
-        <!-- <div *ngIf="!currentUser" class="btn btn-one"><span>REGISTER</span></div> -->
-
         <div *ngIf="currentUser" class="btn btn-one" (click)="logout()"><span>LOGOUT</span></div>
-    
-        <div class="btn btn-one" routerLink="/description"><span>DESCRIPTION</span></div>
 
         <div *ngIf="currentUser" class="btn btn-one" (click)="openSettings()"><span>SETTINGS</span></div>
 

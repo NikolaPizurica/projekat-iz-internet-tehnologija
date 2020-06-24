@@ -2,6 +2,10 @@
     font-family: "Comic Sans MS";
 }
 
+#container {
+    padding: 3rem;
+}
+
 p, ul {
     font-size: 1.2rem;
 }

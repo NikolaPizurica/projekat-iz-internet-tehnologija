@@ -38,11 +38,13 @@ h2 {
 .left {
     float: left;
     background-color: #71b9e2;
+    text-align: left;
 }
 
 .right {
     float: right;
     background-color: #FF6766;
+    text-align: right;
 }
 
 .content {

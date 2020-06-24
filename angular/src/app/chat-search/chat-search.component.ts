@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'node_modules/ngx-spinner'
 
 import { environment } from '../../environments/environment';
 import { Chat } from '../models/chat';
@@ -17,7 +18,7 @@ export class ChatSearchComponent implements OnInit {
   chats: Chat[] = [];
   
   numOfPages = 0;
-  pageLen = 2;
+  pageLen = 3;
   currPage = 0;
 
   currChat: Chat = null;
@@ -25,7 +26,8 @@ export class ChatSearchComponent implements OnInit {
   constructor(private httpClient: HttpClient, 
               private formBuilder: FormBuilder,
               private router: Router,
-              private chatService: ChatService) { }
+              private chatService: ChatService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
@@ -43,6 +45,7 @@ export class ChatSearchComponent implements OnInit {
   get f() { return this.searchForm.controls; }
 
   onSubmit() {
+    this.spinner.show();
     let getParams: any = {};
     if (this.f.title_str.value) {
       getParams.title_str = this.f.title_str.value;
@@ -60,6 +63,7 @@ export class ChatSearchComponent implements OnInit {
         this.chats = data.chats;
         this.numOfPages = Math.ceil(this.chats.length / this.pageLen);
         //this.router.navigate(['/chat_search']);
+        this.spinner.hide();
       });
   }
 

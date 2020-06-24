@@ -39,10 +39,12 @@ export class AppComponent {
     }
     this.check();
     this.notificationCheck = setInterval(this.check.bind(this), 5000);
+
     this.httpClient.get<any>(`${environment.apiUrl}/list_bots`)
       .subscribe((data) => {
         this.botService.bot = data.bots[0];
         this.botService.bot.avatarSrc = `${environment.apiUrl}/get_avatar?id=${data.bots[0].id}&${Date.now()}`;
+        // this.router.navigate(['/']);
       });
   }
 

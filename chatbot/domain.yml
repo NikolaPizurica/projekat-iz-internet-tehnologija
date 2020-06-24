@@ -1,35 +1,58 @@
-session_config:
-  session_expiration_time: 60.0
-  carry_over_slots_to_new_session: true
+actions:
+- action_ask_for_name
+- action_fetch_info
+- action_hello_world
+- action_tell_joke
+- utter_ask_cheer
+- utter_ask_for_name
+- utter_ask_joke
+- utter_cheer_up
+- utter_did_that_help
+- utter_goodbye
+- utter_greet
+- utter_happy
+- utter_iamabot
+- utter_nice_to_meet
+entities:
+- names
+- search_terms
 intents:
 - greet
+- first_name
+- fetch_info
 - goodbye
 - affirm
 - deny
 - mood_great
 - mood_unhappy
-- bot_challenge
-
 responses:
-
-  utter_greet:
-  - text: Hi, how are you?
+  utter_ask_cheer:
+  - text: Oćeš da vidiš nešto što će da te oraspoloži?
+  utter_ask_for_name:
+  - text: Kako se zoveš?
+  utter_ask_joke:
+  - text: Oli da čuješ nešto smješno?
   utter_cheer_up:
-  - text: 'Here is something to cheer you up:'
-    image: https://i.imgur.com/nGF1K8f.jpg
+  - text: Jel ti pomoglo?
   utter_did_that_help:
-  - text: Did that help you?
-  utter_happy:
-  - text: Great, carry on!
+  - text: Da li ti je pomoglo?
   utter_goodbye:
-  - text: Bye
+  - text: Pozdrav
+  utter_greet:
+  - text: Ćao brate
+  utter_happy:
+  - text: Odlično!
   utter_iamabot:
-  - text: I am a bot, made by Rasa.
-actions:
-- utter_greet
-- utter_cheer_up
-- utter_did_that_help
-- utter_happy
-- utter_goodbye
-- utter_iamabot
-
+  - text: Ko oće da zna?
+  utter_nice_to_meet:
+  - text: Zdravo {names}, ja sam Šćepče Aić.
+session_config:
+  carry_over_slots_to_new_session: true
+  session_expiration_time: 60.0
+slots:
+  names:
+    initial_value: brate
+    type: text
+  search_terms:
+    initial_value: Pojma nemam. Ličim li ti ja na enciklopediju?
+    type: text

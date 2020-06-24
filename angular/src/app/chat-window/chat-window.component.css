@@ -1,324 +1,109 @@
-
-
-
-:host ::ng-deep .widget {
-	-webkit-animation: fadein 2s;
+#container {
 	display: none;
-	margin-left: 35%;
-	margin-right: 35%;
-	width: 30%;
-	right: 15px;
-	height: 550px;
-	top: 20%;
-	position: fixed;
-	background: #f6f6f6;
-	border-radius: 10px 10px 10px 10px;
-	box-shadow: 0px 2px 10px 1px #b5b5b5;
-	font-family: "Comic Sans MS", cursive, sans-serif;
-	
-}
-@keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-/* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-/* Opera < 12.1 */
-@-o-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+	width: 66vw;
+	padding-top: 2rem;
+	margin: auto;
 }
 
-:host ::ng-deep .chat_header {
-	height: 10%;
-	background: #FF6766;
-	/* #6072e6 */
-	border-radius: 10px 10px 0px 0px;
-	padding: 5px;
-	font-size: 20px;
+#header {
+	background-color: darkgray;
+	font-family: "Comic Sans MS";
+	padding: 1rem;
+	border-radius: 1rem 1rem 0 0;
+	border: 1px solid black;
 }
 
-:host ::ng-deep .chats {
-	height: 360px;
-	padding: 5px;
-	margin-top: 5px;
-	border-radius: 1px;
-	overflow-y: scroll;
-	transition: 0.2s;
-	font-size: 2rem;
+#header > button {
+	font-size: 1.4rem;
+	border-radius: 0.4rem;
+}
+#header > button:hover {
+	background-color: #FF6766;
 }
 
-:host ::ng-deep div.chats::-webkit-scrollbar {
-	width: 0px;
-	/* remove scrollbar space /
-    background: transparent;
-    / optional: just make scrollbar invisible */
-}
-
-
-/* Track */
-
-:host ::ng-deep div.chats::-webkit-scrollbar-track {
-	box-shadow: inset 0 0 5px grey;
-	border-radius: 10px;
-}
-
-
-/* Handle */
-
-:host ::ng-deep div.chats::-webkit-scrollbar-thumb {
-	background: #647aed;
-}
-
-
-/* Handle on hover */
-
-:host ::ng-deep div.chats::-webkit-scrollbar-thumb:hover {
-	background: #b30000;
-}
-
-:host ::ng-deep #close {
-	cursor: pointer;
-}
-
-::ng-deep .clearfix {
-	margin-top: 2px;
-	margin-bottom: 2px;
-}
-
-:host ::ng-deep .message {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	margin-right: 0;
-	margin-left: 0;
-
-}
-
-:host ::ng-deep .botAvatar {
-	border-radius: 50%;
-	width: 1.5em;
-	height: 1.5em;
-	float: left;
-	margin-left: 5px;
-	border: 2px solid #6072e6;
-}
-
-:host ::ng-deep .botMsg {
-	float: left;
-	margin-top: 5px;
-	background: #71b9e2;
-	box-shadow: 2px 5px 5px 1px #efeef5;
-	border: 1px solid #b174ae;
-	margin-left: 0.5em;
-	padding: 0.6em 1em;
-	border-radius: 1.5em;
-	max-width: 55%;
-	min-width: 25%;
-	font-size: 1.2rem;
-	word-wrap: break-word;
-
-	/* HACK (clearfix isn't working) */
-	margin-right: 50%;
-	
-	
-}
-
-:host ::ng-deep .userMsg {
-	animation: animateElement linear 0.2s;
-	animation-iteration-count: 1;
-	margin-top: 5px;
-	word-wrap: break-word;
-	padding: 0.6em 1em;
+#header > a {
 	float: right;
-	margin-right: 0.5em;
-	background: #FF6766;
-	border: 1px solid #d8445d;
-	color: #fff;
-	border-radius: 1.5em;
-	margin-bottom: 0.15em;
-	font-size: 1.2rem;
-	max-width: 55%;
-	min-width: 25%;
-	line-height: 1.5em;
-	
-	/* HACK (clearfix isn't working) */
-	margin-left: 50%;
+	font-size: 1.4rem;
+	text-decoration: none;
+	color: white;
+}
+#header > a:hover {
+	color: #FF6766;
 }
 
-:host ::ng-deep .msgSeparator {
-	width: 100%;
-	background-color: transparent;
-	height: 10px;
+#messages {
+	height: 60vh;
+	border: 1px solid black;
+    padding: 0.5rem;
+    font-family: "Comic Sans MS";
+    background-color: rgba(255,255,255,0.3);
+    overflow-y: scroll;
 }
 
-:host ::ng-deep .userAvatar {
-	animation: animateElement linear 0.3s;
-	animation-iteration-count: 1;
+::-webkit-scrollbar {
+    width: 0.4rem;
+}
+
+.message {
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 0.4rem;
+    max-width: 40%;
+    word-wrap: break-word;
+}
+
+img.avatar {
+	width: 3rem;
+	height: 3rem;
 	border-radius: 50%;
-	width: 1.5em;
-	height: 1.5em;
-	float: right;
-	margin-right: 5px;
-	border: 2px solid #6072e6;
+	border: 1px solid black;
 }
 
-:host ::ng-deep .singleCard {
-	/* height: 200px; */
-	padding-left: 10%;
-	padding-right: 10px;
+.message p {
+    margin: 0;
 }
 
-.suggestions {
-	padding: 5px;
-	width: 80%;
-	border-radius: 10px;
-	background: #ffffff;
-	box-shadow: 2px 5px 5px 1px #dbdade;
+.left {
+    float: left;
+	background-color: #71b9e2;
+	text-align: left;
 }
 
-:host ::ng-deep .cardsImage {
+.right {
+    float: right;
+	background-color: #FF6766;
+	text-align: right;
+}
+
+.content {
+    font-size: 1.2rem;
+}
+
+.time {
+    font-size: 0.8rem;
+}
+
+#keypad {
+	font-family: "Comic Sans MS";
+	font-size: 1.4rem;
 	width: 100%;
-	height: 80%;
-	border-radius: 10px 10px 0px 0px;
+	box-sizing: border-box;
+	padding: 0.5rem;
 }
-
-:host ::ng-deep .keypad {
-	height: 35px;
-	position: absolute;
-	bottom: 35px;
-	width: 90%;
-}
-
-:host ::ng-deep .usrInput {
-	background: #f1f0f0;
-	padding: 0.5em;
-	width: 90%;
-	margin-left: 4%;
-	border-radius: 20px;
-	box-shadow: 0px 2px 10px 1px #b5b5b5;
-	border: 0;
-	padding-left: 15px;
-	height: 40px;
-}
-
-:host ::ng-deep input:focus {
-	outline: none;
-}
-
-:host ::ng-deep video:focus {
-	outline: none;
-}
-
-:host ::ng-deep .menuTitle {
-	padding: 5px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-:host ::ng-deep .menu {
-	padding: 5px;
-}
-
-
-:host ::ng-deep .menuChips {
-	display: block;
-	background: #6072e6;
-	color: #fff;
-	text-align: center;
-	padding: 5px;
-	margin-bottom: 5px;
-	cursor: pointer;
-	border-radius: 15px;
-	font-size: 14px;
-	word-wrap: break-word;
-}
-
-:host ::ng-deep .imgcard {
-	object-fit: cover;
-	width: 80%;
-	height: 90%;
-	border-radius: 10px 10px 10px 10px;
-	margin-left: 1%;
-}
-
-:host ::ng-deep .chip {
-	background-color: #ce5b81;
-	color: #fff;
-	font-weight: normal;
-	font-weight: 0;
-	text-align: center;
-}
-
-@keyframes animateElement {
-	0% {
-		opacity: 0;
-		transform: translate(0px, 10px);
-	}
-	100% {
-		opacity: 1;
-		transform: translate(0px, 0px);
-	}
-}
-
-
-:host ::ng-deep .keypad-size {
-    font-size: 1.5rem;
-}
-:host ::ng-deep .chats-size {
-    font-size: 4rem;
-}
-
-:host ::ng-deep .label-size {
-    font-size: 2rem;
-}
-
-:host ::ng-deep .imgProfile {
-	box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 10px 0 rgba(0, 0, 0, 0.12);
-	background: white;
-	border-radius: 50px;
-	width: 60%;
-	padding: 2%;
-}
-
-:host ::ng-deep .profile_div {
-	/* display: none; */
-	position: fixed;
-	padding: 5px;
-	width: 20%;
-	bottom: 0;
-	right: 0;
-	cursor: pointer;
-}
-
-:host ::ng-deep .profileIcon {
-	height: 15%;
-	align-items: center;
-	float: left;
-	margin-right: 10px;
-	width: 20%;
-}
-
 
 
 
 .btn {
-    
     margin-left: 20px;
 	line-height: 100px;
 	height: 100px;
 	text-align: center;
 	width: 250px;
 	cursor: pointer;
-	
 	font-size: 30px;
 	text-align: center;
 	letter-spacing: 2px;
-	
 }
-
 .btn:hover {
 	letter-spacing: 5px;
 	color: black;
@@ -330,7 +115,6 @@
 	position: absolute;	
 	left: 42.5%;
 	top: 40%;
-	
 }
 .btn-launch span {
 	z-index: 2;	
@@ -338,7 +122,6 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;	
-	
 }
 .btn-launch::before {
 	content: '';
@@ -365,13 +148,10 @@
 	background-color: rgba(255,255,255,0.1);
 }
 .btn-launch:hover::before {
-  transform: rotate(-45deg);
-  background-color: rgba(148, 28, 28, 0.5);
-  
+  	transform: rotate(-45deg);
+  	background-color: rgba(148, 28, 28, 0.5);
 }
 .btn-launch:hover::after {
-
-  transform: rotate(45deg);
-  background-color: rgba(199, 37, 37, 0.5);
-  
+  	transform: rotate(45deg);
+  	background-color: rgba(199, 37, 37, 0.5);
 }

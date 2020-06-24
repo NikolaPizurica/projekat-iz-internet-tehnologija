@@ -35,7 +35,11 @@
         </div>
     </div>
 
-    <div style="flex: 1;">
-        <app-chat-details *ngIf="currChat !== null"></app-chat-details>
+    <div id="chat-container">
+        <div id="chat-details">
+            <app-chat-details *ngIf="currChat !== null"></app-chat-details>
+        </div>
     </div>
 </div>
+
+<ngx-spinner [fullScreen]="true"></ngx-spinner>

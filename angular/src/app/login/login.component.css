@@ -1,26 +1,54 @@
+* {
+    font-family: "Comic Sans MS";
+    font-size: 1.4rem;
+}
+
 .login {
-    margin-top: 100px;
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.login-header {
-    font-size: 44px;
+.login-body {
+    padding: 3rem;
+    border-radius: 3rem;
+    border: 1px solid black;
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 .form-group {
-    font-size: 30px;
+    margin-bottom: 1rem;
 }
 
-.form-group .form-control {
-    font-size: 30px;
+label {
+    display: block;
 }
 
-.btn {
-    font-size: 30px;
+input[type="text"] {
+    width: 40vw;
+}
+input[type="password"] {
+    width: 40vw;
+}
+
+.invalid {
+    color: red;
+}
+
+button {
+    border-radius: 0.4rem;
+}
+button:hover {
+    background-color: #FF6766;
 }
 
 a {
-    font-size: 30px;
+    float: right;
+    text-decoration: none;
+    color: #6179ff;
+}
+
+a:hover {
+    color: #FF6766;
 }

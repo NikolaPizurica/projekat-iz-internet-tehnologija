@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxSpinnerModule } from 'node_modules/ngx-spinner'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { BotsComponent } from './bots/bots.component';
 import { DescriptionComponent } from './description/description.component';
+import { WebSearchComponent } from './web-search/web-search.component';
 
 @NgModule({
   declarations: [
@@ -30,14 +32,16 @@ import { DescriptionComponent } from './description/description.component';
     ProfileComponent,
     AdministrationComponent,
     BotsComponent,
-    DescriptionComponent
+    DescriptionComponent,
+    WebSearchComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

@@ -1,38 +1,18 @@
+<div id="container">
+   <div id="header">
+      <button id="button-save-chat" (click)="saveChat()">Save Chat</button>
+      <a href="#" (click)="closeWindow()">X</a>
+   </div>
+   <div id="messages">
+      <div *ngFor="let msg of currChat.messages" style="clear:both; overflow:auto;">
+         <div [ngClass]="{'message': true, 'right': msg.part_id === userId, 'left': msg.part_id !== userId}">
+            <img class="avatar" [src]="msg.part_id === userId ? userAvi : bot.avatarSrc" (error)="onAvatarError($event)">
+            <p class="content">{{msg.content}}</p>
+            <p class="time">{{msg.msg_time}}</p>
+         </div>
+      </div>
+   </div>
+   <input type="text" id="keypad" (keypress)="onUserInput($event)" placeholder="Type a message..." autocomplete="off">
+</div>
 
-
-       <div class="container">
-        
- 
-          <div class="widget">
-             <button id="button-save-chat" (click)="saveChat()">Save Chat</button>
-             <label>Choose your Language</label>
-                <select class="browser-default" id="select-language">
-                   <option value="english">English</option>
-                   <option value="croatian">Croatian</option>
-                   <option value="detect-language">Detect Language</option>
-                </select>
-             <div class="chat_header">
-                <!--Add the name of the bot here -->
-                <label  class="label-size" id="label-title" style="color:white;margin-left: 5px;">IT Chatbot </label>
-                <span style="color:white;margin-right: 5px;float:right;margin-top: 5px;" id="close">
-                   <i class="material-icons">close</i>
-                </span>
-             </div>
-             <!--Chatbot content goes here -->
-             <div class="chats" id="chats">
-                <div class="clearfix"></div>
-             </div>
-             <!--text bar -->
-             <div class="keypad" >
-                <input type="text" id="keypad" class="usrInput browser-default keypad-size" placeholder="Type a message..." autocomplete="off">
-             </div>
-          </div>
-          <!--bot widget (click to open chat) 
-          <div class="profile_div" id="profile_div">
-             <img class="imgProfile" src="../../assets/images/botAvatar_bmo.jpg"/>
-          </div>
-          -->
-          <div class="btn btn-launch"> LAUNCH </div>
-       </div>
-      
- 
+<div id="launch" class="btn btn-launch" (click)="openWindow()"> LAUNCH </div>

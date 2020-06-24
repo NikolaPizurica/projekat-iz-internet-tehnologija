@@ -13,10 +13,7 @@ import { AuthService } from '../auth/auth.service'
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  loading = false;
-  submitted = false;
   returnUrl: string;
-  error = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-        mail: ['', Validators.required],
+        mail: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$')]],
         password: ['', Validators.required]
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -40,22 +37,17 @@ export class LoginComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   onSubmit() {
-    this.submitted = true;
-
     if (this.loginForm.invalid) {
       return;
     }
-
-    this.loading = true;
     this.authService.login(this.f.mail.value, this.f.password.value)
       .pipe(first())
       .subscribe(
-        data => {
+        (data) => {
           this.router.navigate([this.returnUrl]);
         },
-        error => {
-          this.error = error;
-          this.loading = false;
+        (error) => {
+          alert(error);
       });
   }
 
